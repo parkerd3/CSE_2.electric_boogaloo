@@ -26,6 +26,7 @@ class Program
         // displayed sentence reads better.
         if (pbd_perc >= 90)
         {
+            // Convert A+ to A
             if (pbd_pm == "+")
             {
                 pbd_pm = "";
