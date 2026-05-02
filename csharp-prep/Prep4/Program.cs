@@ -22,8 +22,8 @@ class Program
                 numbers.Add(num);
             }
         } while (num != 0);
-
-        // Sum
+        Console.WriteLine("");
+        // Sum & Max
         int total = 0;
         int max = 0;
         foreach (int number in numbers)
@@ -34,13 +34,13 @@ class Program
                 max = number;
             }
         }
-        Console.Write($"The sum is: {total}");
+        Console.WriteLine($"The sum is: {total}");
         // Ave
         float average = 0;
         int qty = numbers.Count();
-        average = total / qty;
-        Console.Write($"The average value is: {average}");
+        average = (float)total / qty;
+        Console.WriteLine($"The average value is: {average}");
         // Max
-        Console.Write($"The maximum value is: {max}");
+        Console.WriteLine($"The maximum value is: {max}");
     }
 }
