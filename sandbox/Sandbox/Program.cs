@@ -9,8 +9,15 @@ class Program
 
         using (StreamWriter outputFile = new StreamWriter(fileName))
         {
-            outputFile.WriteLine("Why did the chicken cross the road? \n");
+            outputFile.WriteLine("Why did the chicken turn the page?\n");
             outputFile.WriteLine("To get to the other side");
+        }
+
+        string[] lines = File.ReadAllLines(fileName);
+
+        foreach (string line in lines)
+        {
+            Console.WriteLine(line);
         }
     }
 }
