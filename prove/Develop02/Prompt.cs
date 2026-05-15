@@ -1,34 +1,76 @@
-public class Prompt_pbd
+using Microsoft.VisualBasic;
+
+/// <summary>
+/// Handles the organization of the prompts given to the user. 
+/// </summary>
+public class Prompt
 {
     // Attributes
-    public static List<string> _prompts_pbd = new List<string>();
+
+    /// <summary>
+    /// Prompts available for display.
+    /// </summary>
+    public List<string> _pList = new List<string>();
+
+    /// <summary>
+    /// File where prompts are read/written.
+    /// </summary>
+    public string _file;
 
     // Behaviors
-    public static void LoadPrompts_pbd(string file_name_pbd)
-    {
-        _prompts_pbd.Clear();
-        string[] prompt_array_pbd = File.ReadAllLines(file_name_pbd);
-        foreach (string line_pbd in prompt_array_pbd)
-        {
-            _prompts_pbd.Add(line_pbd);
-        }
-    }
-    public static string Generate_pbd()
-    {
 
-        return "";
-    }
-    public static void AddPrompt_pbd(string new_prompt_pbd, string file_name_pbd)
+    Random rng = new Random();
+    /// <summary>
+    /// Randomly pick and return a prompt from the <c>_pList</c>.
+    /// </summary>
+    public string Generate_pbd()
     {
-        using (StreamWriter file_pbd = new StreamWriter(file_name_pbd))
+        int idx = rng.Next(_pList.Count);
+        return _pList[idx];
+    }
+
+    /// <summary>
+    /// Read in prompts from <c>_file</c> and store them in <c>_pList</c>.
+    /// </summary>
+    public void LoadPrompts()
+    {
+        _pList.Clear();
+        string[] prompt_array = File.ReadAllLines(_file);
+        foreach (string line in prompt_array)
         {
-            file_pbd.WriteLine(new_prompt_pbd);
-            // Prompts that were supposed to be added, but I need to debug the program:
-            // In what ways were you better today than you were yesterday?
-            // In what way do you want to be better tomorrow?
-            // Have you done any good in the world today?
-            // Do you feel like you're missing something out of life? What is it that you think you need?
-            // What kind of gratitude do you have for today?
+            _pList.Add(line);
         }
+    }
+    /// <summary>
+    /// Save <c>new_prompt</c> to the prompt <c>_file</c>, then load the
+    /// updated pool into <c>_pList</c>.
+    /// </summary>
+    public void AddPrompt(string new_prompt)
+    {
+        using (StreamWriter Writer = new StreamWriter(_file))
+        {
+            foreach (string prompt in _pList)
+            {
+                Writer.WriteLine(prompt);
+            }
+            Writer.WriteLine(new_prompt);
+        }
+        LoadPrompts();
+    }
+
+    /// <summary>
+    /// Return a message containing each prompt and the name of the file
+    /// they are saved to.
+    /// </summary>
+    public override string Write()
+    {
+        string prompt_list = "";
+        foreach (string x in _pList)
+        {
+            prompt_list += $"{x}\n";
+        }
+        string message = $"File: \"{_file}\"\n" +
+        $"Prompts: \n{prompt_list}";
+        return message;
     }
 }
