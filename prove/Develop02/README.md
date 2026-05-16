@@ -36,7 +36,7 @@ classDiagram
     class Prompt {
         +List~string~ _pList
         +string _file
-        +Generate_pbd() string
+        +Generate() string
         +LoadPrompts()
         +AddPrompt(new_prompt: string)
         +ToString() string
