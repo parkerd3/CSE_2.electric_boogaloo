@@ -9,12 +9,12 @@ it becomes impossible. Forgive me if I missed a variable here or there.
 Things Learned and from where:
 https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0017
 - How to initialize an instance of a class and set its attributes at
-  the same time. (A)
+  the same time. (See line 38)
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments
 - How to write and format XML comments for methods, attributes, and
   classes.
 https://learn.microsoft.com/en-us/dotnet/api/system.datetime.toshortdatestring?view=netframework-4.8.1
-- How to grab the current date as a string. (B)
+- How to grab the current date as a string. (See line 82)
 https://vocal.media/writers/string-repetition-in-c-with-the-new-string-constructor
 - How to concisely create a string consisting of one character n times.
 https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0090
