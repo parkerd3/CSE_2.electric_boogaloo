@@ -3,15 +3,15 @@ using System.Diagnostics;
 /// Class dedicated to storing and manipulating data related to journal
 /// entries including date written, prompt shown, and response given.
 /// </summary>
-public class Entry
+public class EntryPD
 {
   // Attributes
 
-  public string _prompt;
-  public string _response;
-  public string _date;
+  public string _promptPD;
+  public string _responsePD;
+  public string _datePD;
   // Delimiter used for writing entries to a file.
-  private string s = "~|~";
+  private string sPD = "~|~";
 
   // Behaviors
 
@@ -21,27 +21,27 @@ public class Entry
   /// </summary>
   public override string ToString()
   {
-    return _date + $"\n(Prompt: {_prompt})\n" +
-    _response;
+    return _datePD + $"\n(Prompt: {_promptPD})\n" +
+    _responsePD;
   }
 
   /// <summary>
-  /// Read a string and populate the <c>_date, _prompt, _response</c>
+  /// Read a string and populate the <c>_datePD, _promptPD, _responsePD</c>
   /// attributes.
   /// </summary>
-  public void Read(string jargon)
+  public void ReadPD(string jargonPD)
   {
-    string[] atties = jargon.Split(new string[] {s}, StringSplitOptions.None);
-    _date = atties[0];
-    _prompt = atties[1];
-    _response = atties[2];
+    string[] attiesPD = jargonPD.Split(new string[] {sPD}, StringSplitOptions.None);
+    _datePD = attiesPD[0];
+    _promptPD = attiesPD[1];
+    _responsePD = attiesPD[2];
   }
 
   /// <summary>
   /// Return the entry as a string formatted for writing to file.
   /// </summary>
-  public string Write()
+  public string WritePD()
   {
-    return _date+s+_prompt+s+_response;
+    return _datePD+sPD+_promptPD+sPD+_responsePD;
   }
 }

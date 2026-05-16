@@ -34,13 +34,13 @@ class Program
     and a couple others to help in the case of saving/displaying a
     journal.
     */
-    bool CONTINUE = true;
-    Prompt Prompt = new Prompt() {_file = "Prompts.txt"}; // *A
-    Prompt.LoadPrompts();
+    bool continuePD = true;
+    PromptPD PromptPD = new PromptPD() {_filePD = "Prompts.txt"}; // *A
+    PromptPD.LoadPromptsPD();
 
-    bool journalLoaded = false;
-    bool hasTitle = false;
-    Journal journal = new Journal();
+    bool journalLoadedPD = false;
+    bool hasTitlePD = false;
+    JournalPD journalPD = new JournalPD();
     
     /*
     There are a couple scattered situations where we need to check if
@@ -48,11 +48,11 @@ class Program
     gives us a convenient way to grab a title from the User in any such
     situations.
     */
-    void GetTitle()
+    void GetTitlePD()
     {
       Console.WriteLine("Enter a title for your journal:");
-      journal._title = Console.ReadLine();
-      hasTitle = true;
+      journalPD._titlePD = Console.ReadLine();
+      hasTitlePD = true;
     }
 
     do
@@ -71,40 +71,40 @@ class Program
         "6. Save As\n"+
         "7. Quit"
       );
-      string selection = Console.ReadLine();
+      string selectionPD = Console.ReadLine();
 
       // New Entry
-      if (selection == "1")
+      if (selectionPD == "1")
       {
-        Entry entry = new()
+        EntryPD entryPD = new()
         {
-          _prompt = Prompt.Generate_pbd(),
-          _date = DateTime.Now.ToShortDateString() // *B
+          _promptPD = PromptPD.GeneratePD(),
+          _datePD = DateTime.Now.ToShortDateString() // *B
         };
 
-        Console.WriteLine(entry._prompt);
-        entry._response = Console.ReadLine();
-        journal.AddEntry(entry);
+        Console.WriteLine(entryPD._promptPD);
+        entryPD._responsePD = Console.ReadLine();
+        journalPD.AddEntryPD(entryPD);
       }
       // Add Prompt.
-      else if (selection == "2")
+      else if (selectionPD == "2")
       {
         Console.WriteLine(
           "Type a prompt you want to be added to the pool " + 
           "of random prompts:"
         );
-        string addition = Console.ReadLine();
-        Prompt.AddPrompt(addition);
+        string additionPD = Console.ReadLine();
+        PromptPD.AddPromptPD(additionPD);
         Console.WriteLine("Prompt added.");
       }
       // Display Journal Entries
-      else if (selection == "3")
+      else if (selectionPD == "3")
       {
-        if (!hasTitle){ GetTitle(); }
-        Console.WriteLine(journal);
+        if (!hasTitlePD){ GetTitlePD(); }
+        Console.WriteLine(journalPD);
       }
       // Load Journal
-      else if (selection == "4")
+      else if (selectionPD == "4")
       {
         /*
         It is courteous to warn the user about unsaved data, and give
@@ -117,15 +117,15 @@ class Program
         if (Console.ReadLine() == "2"){ continue; }
         
         Console.WriteLine("Enter the name of the file to load:");
-        journal._file = Console.ReadLine();
+        journalPD._filePD = Console.ReadLine();
 
-        journal.Load();
-        journalLoaded = true;
-        Console.WriteLine($"Successfully loaded \"{journal._file}\"");
-        hasTitle = true;
+        journalPD.LoadPD();
+        journalLoadedPD = true;
+        Console.WriteLine($"Successfully loaded \"{journalPD._filePD}\"");
+        hasTitlePD = true;
       }
       // Save and Save As
-      else if (selection == "5" | selection == "6")
+      else if (selectionPD == "5" || selectionPD == "6")
       { 
         /*
         In either case, if the user selects "Save" or "Save As" we need
@@ -135,48 +135,51 @@ class Program
         will default to the exact same behavior as "Save As" hence these
         less than ideally convoluted conditions.
         */
-        if (selection == "5" & journalLoaded)
+        if (selectionPD == "5" && journalLoadedPD)
         {
           Console.WriteLine("Saving...");
-          journal.Save();
+          journalPD.SavePD();
           Console.WriteLine("Save complete!");
         }
         else
         {
-          if (!hasTitle){ GetTitle(); }
+          if (!hasTitlePD){ GetTitlePD(); }
           else
           {
             /*
             If there's a "Save As" option, there should be a way to
             change the title.
             */
-            Console.WriteLine($"The current title is {journal._title}"+
-            "\nWould you like to rename your journal?\n1. Yes\n2. No"
+            Console.WriteLine($"The current title is {journalPD._titlePD}"+
+            "\nWould you like to rename your journal?"+
+            "\n1. Yes"+
+            "\n2. No"
             );
-            if (Console.ReadLine() == "1"){ GetTitle(); }
+            if (Console.ReadLine() == "1"){ GetTitlePD(); }
           }
           Console.WriteLine(
           "Enter the file name (include \".txt\"):"
           );
 
-          journal._file = Console.ReadLine();
+          journalPD._filePD = Console.ReadLine();
           Console.WriteLine("Saving...");
-          journal.Save();
+          journalPD.SavePD();
           Console.WriteLine("Save complete!");
         }
       }
       // Quit
-      else if (selection == "7")
+      else if (selectionPD == "7")
       {
         Console.WriteLine("Exiting Journal...");
-        CONTINUE = false;
+        continuePD = false;
       }
       // The user may fat-finger a non-option. Best to let them know.
       else
       {
-        Console.WriteLine("Invalid entry; please type "+
-        "a number from the list.");
+        Console.WriteLine(
+          "Invalid entry; please type a number from the list."
+        );
       }
-    } while(CONTINUE);
+    } while(continuePD);
   }
 }

@@ -4,74 +4,74 @@
 /// file, and for formatting the data to be displayed in the console.
 /// Includes attributes for title, file name, and a list of the entries. 
 /// </summary>
-public class Journal
+public class JournalPD
 {
-  public string _title;
-  public string _file;
-  public List<Entry> _entries = new List<Entry>();
+  public string _titlePD;
+  public string _filePD;
+  public List<EntryPD> _entriesPD = new List<EntryPD>();
   
   // Behaviors
 
   /// <summary>
-  /// Read <c>_file</c> and populate the <c>_title</c> and 
-  /// <c>_entries</c> attributes.
+  /// Read <c>_filePD</c> and populate the <c>_titlePD</c> and 
+  /// <c>_entriesPD</c> attributes.
   /// </summary>
-  public void Load()
+  public void LoadPD()
   {
-    string[] lines = File.ReadAllLines(_file);
-    _title = lines[0];
-    for (int i = 1; i < lines.Length; i++)
+    string[] linesPD = File.ReadAllLines(_filePD);
+    _titlePD = linesPD[0];
+    for (int iPD = 1; iPD < linesPD.Length; iPD++)
     {
-      Entry entry_i = new Entry();
-      entry_i.Read(lines[i]);
-      _entries.Add(entry_i);
+      EntryPD entry_iPD = new EntryPD();
+      entry_iPD.ReadPD(linesPD[iPD]);
+      _entriesPD.Add(entry_iPD);
     }
   }
   /// <summary>
-  /// Write <c>_title</c> and all <c>_entries</c> to <c>_file</c>.
+  /// Write <c>_titlePD</c> and all <c>_entriesPD</c> to <c>_filePD</c>.
   /// </summary>
-  public void Save()
+  public void SavePD()
   {
-    using (StreamWriter writer = new StreamWriter(_file))
+    using (StreamWriter writerPD = new StreamWriter(_filePD))
     {
-      writer.WriteLine(_title);
-      foreach (Entry entry in _entries)
+      writerPD.WriteLine(_titlePD);
+      foreach (EntryPD entryPD in _entriesPD)
       {
-        writer.WriteLine(entry.Write());
+        writerPD.WriteLine(entryPD.WritePD());
       }
     }
   }
   
   /// <summary>
-  /// Append <c>newEntry</c> to <c>_entries</c>.
+  /// Append <c>newEntryPD</c> to <c>_entriesPD</c>.
   /// </summary>
-  public void AddEntry(Entry newEntry)
+  public void AddEntryPD(EntryPD newEntryPD)
   {
-    _entries.Add(newEntry);
+    _entriesPD.Add(newEntryPD);
   }
   
   public override string ToString()
   {
-    string hRule = new string('=', 50);
-    string hDash = new string('-', 50);
+    string hRulePD = new string('=', 50);
+    string hDashPD = new string('-', 50);
 
     // Title block:
     // Shows the title of the journal and the number of entries.
-    string titleBlock = // Use '―' for title block instead of '-'
-    $"{hRule}\n{_title},\n{_entries.Count} Entries\n{hRule}\n"
+    string titleBlockPD = // Use '―' for title block instead of '-'
+    $"{hRulePD}\n{_titlePD},\n{_entriesPD.Count} Entries\n{hRulePD}\n"
     ;
 
     // Building the block of entries:
-    string entries = "";
-    int n = 1;
-    foreach (Entry entry in _entries)
+    string entriesPD = "";
+    int nPD = 1;
+    foreach (EntryPD entryPD in _entriesPD)
     {
-      entries += $"{n}] "+entry.ToString();
-      entries += $"\n{hDash}\n";
-      n++;
+      entriesPD += $"{nPD}] "+entryPD.ToString();
+      entriesPD += $"\n{hDashPD}\n";
+      nPD++;
     }
 
-    string display = titleBlock + entries;
-    return display;
+    string displayPD = titleBlockPD + entriesPD;
+    return displayPD;
   }
 }

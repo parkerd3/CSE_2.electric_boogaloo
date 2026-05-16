@@ -3,59 +3,59 @@ using Microsoft.VisualBasic;
 /// <summary>
 /// Handles the organization of the prompts given to the user. 
 /// </summary>
-public class Prompt
+public class PromptPD
 {
   // Attributes
 
   /// <summary>
   /// Prompts available for display.
   /// </summary>
-  public List<string> _pList = new List<string>();
+  public List<string> _pListPD = new List<string>();
 
   /// <summary>
   /// File where prompts are read/written.
   /// </summary>
-  public string _file;
+  public string _filePD;
 
   // Behaviors
 
-  Random rng = new Random();
+  Random rngPD = new Random();
   /// <summary>
-  /// Randomly pick and return a prompt from the <c>_pList</c>.
+  /// Randomly pick and return a prompt from the <c>_pListPD</c>.
   /// </summary>
-  public string Generate_pbd()
+  public string GeneratePD()
   {
-    int idx = rng.Next(_pList.Count);
-    return _pList[idx];
+    int idxPD = rngPD.Next(_pListPD.Count);
+    return _pListPD[idxPD];
   }
 
   /// <summary>
-  /// Read in prompts from <c>_file</c> and store them in <c>_pList</c>.
+  /// Read in prompts from <c>_filePD</c> and store them in <c>_pListPD</c>.
   /// </summary>
-  public void LoadPrompts()
+  public void LoadPromptsPD()
   {
-    _pList.Clear();
-    string[] prompt_array = File.ReadAllLines(_file);
-    foreach (string line in prompt_array)
+    _pListPD.Clear();
+    string[] prompt_arrayPD = File.ReadAllLines(_filePD);
+    foreach (string linePD in prompt_arrayPD)
     {
-      _pList.Add(line);
+      _pListPD.Add(linePD);
     }
   }
   /// <summary>
-  /// Save <c>new_prompt</c> to the prompt <c>_file</c>, then load the
-  /// updated pool into <c>_pList</c>.
+  /// Save <c>new_promptPD</c> to the prompt <c>_filePD</c>, then load the
+  /// updated pool into <c>_pListPD</c>.
   /// </summary>
-  public void AddPrompt(string new_prompt)
+  public void AddPromptPD(string new_promptPD)
   {
-    using (StreamWriter Writer = new StreamWriter(_file))
+    using (StreamWriter WriterPD = new StreamWriter(_filePD))
     {
-      foreach (string prompt in _pList)
+      foreach (string promptPD in _pListPD)
       {
-        Writer.WriteLine(prompt);
+        WriterPD.WriteLine(promptPD);
       }
-      Writer.WriteLine(new_prompt);
+      WriterPD.WriteLine(new_promptPD);
     }
-    LoadPrompts();
+    LoadPromptsPD();
   }
 
   /// <summary>
@@ -64,13 +64,13 @@ public class Prompt
   /// </summary>
   public override string ToString()
   {
-    string prompt_list = "";
-    foreach (string x in _pList)
+    string prompt_listPD = "";
+    foreach (string xPD in _pListPD)
     {
-      prompt_list += $"{x}\n";
+      prompt_listPD += $"{xPD}\n";
     }
-    string message = $"File: \"{_file}\"\n" +
-    $"Prompts: \n{prompt_list}";
-    return message;
+    string messagePD = $"File: \"{_filePD}\"\n" +
+    $"Prompts: \n{prompt_listPD}";
+    return messagePD;
   }
 }
