@@ -20,4 +20,3 @@ classDiagram
         +GetDecimalForm() : double
     }
 ```
-
