@@ -58,7 +58,7 @@ public class JournalPD
     // Title block:
     // Shows the title of the journal and the number of entries.
     string titleBlockPD = // Use '―' for title block instead of '-'
-    $"{hRulePD}\n{_titlePD},\n{_entriesPD.Count} Entries\n{hRulePD}\n"
+    $"{hRulePD}\n{_titlePD},\n{_entriesPD.Count()} Entries\n{hRulePD}\n"
     ;
 
     // Building the block of entries:
