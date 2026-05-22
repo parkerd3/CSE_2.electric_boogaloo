@@ -16,14 +16,18 @@ Here are the pages associated with this assignment:
 
 - Reference
 
-- Word
-
 ### Diagram
 
 My class diagram for this program
 
 ```mermaid
 classDiagram
+    class Program {
+
+    }
+    class Menu {
+        
+    }
     class Scripture {
         - _reference: string
         - _scriptureText: string
@@ -37,6 +41,9 @@ classDiagram
     class Word {
         + BlankOut(word: string) string
         
+    }
+    class Menu {
+
     }
 ```
 
