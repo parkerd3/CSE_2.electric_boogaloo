@@ -26,7 +26,11 @@ classDiagram
 
     }
     class Menu {
-        
+        string _standardWorks = "";
+        string _booksOT = "";
+        string _booksNT = "";
+        string _booksBoM = "";
+        string _booksPGP = "";
     }
     class Scripture {
         - _reference: string
@@ -46,4 +50,3 @@ classDiagram
 
     }
 ```
-
