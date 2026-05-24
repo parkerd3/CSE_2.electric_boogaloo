@@ -10,19 +10,39 @@ Here are the pages associated with this assignment:
 
 ## Design
 
-### Required Classes
+### Class Breakdown
+
+#### Required Classes
 
 - Scripture
 
-  - Responsible for doing some fancy stuff
+  - Creates and manages the Reference and Word classes
+
+  - Responsible for formatting and providing strings for the program to display
 
 - Reference
 
-  - Responsible for other stuff
+  - Contains information about the Book, Chapter, and Verse of a scripture, and
+    is capable of accomodating scripture references of more than one verse
+
+  - Responsible for parsing a user-input string of verses into a list of
+    integers (e.g. `"12-15, 20-22, 24"` to `[12, 13, 14, 15, 20, 21, 22, 24]`)
 
 - Word
 
-  - Yet even more responsibilities.
+  - Contains the actual text of a given exerpt
+
+  - Responsible for accessing the CSV files containing the scriptures
+
+  - Responsible for the creation of the blanked out verses
+
+#### My Classes
+
+- Menu
+
+  - Contains multiple raw string literals of each menu layer
+  
+  - Responsible for returning the correct menu screen given an integer input
 
 ### Class Diagram
 
