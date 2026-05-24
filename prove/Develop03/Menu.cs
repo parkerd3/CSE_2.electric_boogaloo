@@ -1,26 +1,79 @@
+using System.ComponentModel;
+
 public static class Menu
 {
+  private static int chapter = 0;
 
-  private static string _standardWorks,
-    _booksOT,
-    _OTLaw,
-    _OTHistory,
-    _OTPoetry,
-    _OTProphets1,
-    _OTProphets2,
-    _booksNT,
-    _NTGospels,
-    _NTPaul,
-    _NTEpistles,
-    _booksBM,
-    _BMSmall,
-    _BMLarge,
-    _booksPP
+  private static string _volumes,
+    _subOT,
+    _booksOTLaw,
+    _booksOTHistory,
+    _booksOTPoetry,
+    _booksOTProphets1,
+    _booksOTProphets2,
+    _subNT,
+    _booksNTGospels,
+    _booksNTPaul,
+    _booksNTEpistles,
+    _subBM,
+    _booksBMSmall,
+    _booksBMLarge,
+    _booksPP,
+    _askForChapter
     ;
+  private static string[] _mainMenu = {
+    // Where each number in the Main menu will take you:
+    "Exiting Program",
+    _subOT,
+    _subNT,
+    _subBM,
+    _booksPP,
+    _askForChapter
+    },
+    _OTSubmenu = {
+    _volumes,
+    _booksOTLaw,
+    _booksOTHistory,
+    _booksOTPoetry,
+    _booksOTProphets1,
+    _booksOTProphets2
+    },
+    _NTSubmenu = {
+    _volumes,
+    _booksNTGospels,
+    _booksNTPaul,
+    _booksNTEpistles
+    },
+    _BMSubmenu = {
+    _volumes,
+    _booksBMSmall,
+    _booksBMLarge
+    }
+    ;
+  private static string[][] _subsections = {
+    new string[] {
+    // Usually the 0 index will always take you up a level, so there would be no
+    // way for a zero to be input here. But throwing a garbage array here will
+    // make it so that our arrays with indices >=1 are accessible.
+    "If you're seeing this the program is broken."
+    },
+    new string[] {
+      _subOT,
+      
+    },
+    new string[] {
+      _subNT
+    },
+    new string[] {
+      _subBM
+    },
+
+  };
 
   static Menu()
   {
-    _standardWorks = """
+    // Assigning values in this constructor to keep the above definitions clean.
+    _volumes = """
       Choose a volume (Enter a number 0-5):
       0. (Quit)
       1. Old Testament
@@ -30,7 +83,7 @@ public static class Menu
       5. Doctrine and Covenants
     """;
 
-    _booksOT = """
+    _subOT = """
       Choose a subsection:
          [Section]            [From] >> [To]
       0. (Go Back)
@@ -41,7 +94,7 @@ public static class Menu
       5. The Prophets (2/2) | Jonah     Malachi
     """;
 
-    _OTLaw = """
+    _booksOTLaw = """
       Select book:
       0. (Go Back)
       1. Genesis
@@ -51,7 +104,7 @@ public static class Menu
       5. Deuteronomy
     """;
 
-    _OTHistory = """
+    _booksOTHistory = """
       Select book:
        0. (Go Back)
        1. Joshua
@@ -68,7 +121,7 @@ public static class Menu
       12. Esther
     """;
 
-    _OTPoetry = """
+    _booksOTPoetry = """
       Select book:
       0. (Go Back)
       1. Job
@@ -78,7 +131,7 @@ public static class Menu
       5. Song of Solomon
     """;
 
-    _OTProphets1 = """
+    _booksOTProphets1 = """
       Select book:
       0. (Go Back)
       1. Isaiah
@@ -92,7 +145,7 @@ public static class Menu
       9. Obadiah
     """;
 
-    _OTProphets2 = """
+    _booksOTProphets2 = """
       Select book:
       0. (Go Back)
       1. Jonah
@@ -105,7 +158,7 @@ public static class Menu
       8. Malachi
     """;
 
-    _booksNT = """
+    _subNT = """
       Choose a subsection:
          [Section]            [From] >> [To]
       0. (Go Back)
@@ -114,7 +167,7 @@ public static class Menu
       3. General Epistles + | Hebrews   Revelation
     """;
 
-    _NTGospels = """
+    _booksNTGospels = """
       Select book:
       0. (Go Back)
       1. Matthew
@@ -124,7 +177,7 @@ public static class Menu
       5. Acts
     """;
 
-    _NTPaul = """
+    _booksNTPaul = """
       Select book:
        0. (Go Back)
        1. Romans
@@ -140,10 +193,9 @@ public static class Menu
       11. 2 Timothy
       12. Titus
       13. Philemon
-    """;
-    // Dadgum Paul was a yapper.
+    """; // Dadgum Paul was a yapper.
 
-    _NTEpistles = """
+    _booksNTEpistles = """
       Select book:
       0. (Go Back)
       1. Hebrews
@@ -157,7 +209,7 @@ public static class Menu
       9. Revelation
     """;
 
-    _booksBM = """
+    _subBM = """
       Choose a subsection:
          [Section]                [From]     >>     [To]
       0. (Go Back)
@@ -165,7 +217,7 @@ public static class Menu
       2. Mormon's Abridgement   | Words of Mormon   Moroni
     """;
 
-    _BMSmall = """
+    _booksBMSmall = """
       Select book:
       0. (Go Back)
       1. 1 Nephi
@@ -176,7 +228,7 @@ public static class Menu
       6. Omni
     """;
 
-    _BMLarge = """
+    _booksBMLarge = """
       Select book:
       0. (Go Back)
       1. Words of Mormon
@@ -189,11 +241,37 @@ public static class Menu
       8. Ether
       9. Moroni
     """;
+
+    _booksPP = """
+      Select book:
+      0. (Go Back)
+      1. Moses
+      2. Abraham
+      3. JST-Matthew
+      4. Joseph Smith History
+      5. Articles of Faith
+    """;
+
+    _askForChapter = """
+      Enter chapter number:
+    """;
   }
 
-  // public static string Main()
-  // {
-    
-  // }
+  public static string Volumes()
+  {
+    return _volumes;
+  }
+  public static string Subsection(int volume)
+  {
+    return _mainMenu[volume];
+  }
+  /// <summary>
+  /// Return the list of books to choose from based on volume -> subsection.
+  /// </summary>
+  /// <returns>String</returns>
+  public static string Books(int volume, int sub)
+  {
+    return 
+  }
 
 }
