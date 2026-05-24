@@ -18,7 +18,7 @@ static int GetUserInputInteger(string Prompt)
       returnValue = int.Parse(userInputStr);
       flag = false;
     } catch (Exception e) {
-      Console.WriteLine($"An error occurred: {e}\nPlease type an integer")
+      Console.WriteLine($"An error occurred: {e}\nPlease type an integer");
     }
   }
   return returnValue;
@@ -41,7 +41,7 @@ static float GetUserInputFloat(string Prompt)
       returnValue = float.Parse(userInputStr);
       flag = false;
     } catch (Exception e) {
-      Console.WriteLine($"An error occurred: {e}\nPlease type a number")
+      Console.WriteLine($"An error occurred: {e}\nPlease type a number");
     }
   }
 }
@@ -66,7 +66,7 @@ static string GetUserInputString(string Prompt)
       }
       flag = false;
     } catch (Exception e) {
-      Console.WriteLine($"An error occurred: {e}")
+      Console.WriteLine($"An error occurred: {e}");
     }
   }
   return returnValue;
