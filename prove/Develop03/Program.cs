@@ -6,6 +6,10 @@ using System.Collections.Concurrent;
 Things learned and from where:
 https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/
 - How to use raw string literals for multiline strings (see Menu class).
+https://learn.microsoft.com/en-us/dotnet/csharp/how-to/parse-strings-using-split
+- How to use the .Split() method
+https://learn.microsoft.com/en-us/dotnet/api/system.string.contains?view=netframework-4.8.1
+- How to use the .Contains() method to parse a verse string.
 */
 class Program
 {
@@ -60,11 +64,12 @@ class Program
     Console.Clear();
     do
     {
+      // MENU NAVIGATION
       int mainPick;
       int volumePick;
       int subPick;
       string userBook;
-
+      
       MainMenu:
       mainPick = GetUserInputInteger(Menu.MainMenu());
       Console.Clear();
@@ -101,7 +106,8 @@ class Program
         "(Examples: \"3:7,8-12\", \"15:10-12,17,20\", \"2:6-12,18,21-23\")"
       );
 
-      
+      // SCRIPTURE DISPLAY
+
     } while (quitFlag);
   }
 }
