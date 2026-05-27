@@ -1,11 +1,38 @@
 using System.ComponentModel;
+/*
+I wanted to challenge myself by providing the user with a familiar menu-like
+experience. Part of this came from the desire to have the user be able to select
+any scripture they like from a database, rather than have them hard-coded in. I
+decided it would be nicer to be able to select the book you want instead of
+worrying about correct spelling.
 
+The Class takes advantage of array indices. Since the user inputs numbers to
+select their options, I wanted to be able to reference a specific index based on
+those numbers to return and display the appropriate string.
+
+Keeping track of the navigation logic, however, was an absolute nightmare. Even
+after sketching the whole thing out in flowcharts and on paper, I made myself
+dizzy trying to keep track of what menu strings belonged where. Additionally, 
+not having a consistent naming scheme going into the project made things all the
+more confusing. I will definitely need to nail down a more consistent approach
+if I try something similar in the future.
+*/
 public static class MenuPD
 {
   private static int _volumeIdxPD = 0;
   private static int _subIdxPD = 0;
   private static int _bookIdxPD = 0;
 
+
+  /*
+  These include all of the differen pages the menu could possibly display.
+  Putting titles within the strings themselves helped me sort out where they
+  should appear with greater ease.
+
+  Not every string actually ends up getting used for the main program, but I
+  needed them as a placeholder to help me mentally map out how the navigation
+  would play out.
+  */
   private static string _mainMenuStringPD = """
   MAIN MENU
   Choose a volume (Enter a number 0-5):
@@ -17,6 +44,11 @@ public static class MenuPD
   5. Doctrine and Covenants
   """,
 
+  // The Old Testament in particular has so many books, that it was clear to me
+  // that it would be more readable to have each main volume split into smaller
+  // sub-collections to choose from, rather than a single menu 50+ lines long.
+  // I tried to keep most menus less than 10 lines, but a few end up in the low 
+  // teens.
   _volumeMenuStringOTPD = """
   OLD TESTAMENT
   Choose a subsection:
@@ -204,6 +236,17 @@ public static class MenuPD
   Enter chapter number:
   """;
 
+  /*
+  These arrays are designed to return the correct menu string based on the
+  integer inputs from the user. E.g. _subMenuStringsArray[2][2] will return the
+  menu string with all of the books that are considered the Pauline episles:
+  (2. New Testament) -> (2. Pauline Epistles) -> _subMenuString_PaulPD
+
+  Since 0 is always the option which returns the user to the previous screen, I
+  decided to make each 0-index value empty. Perhaps it would have been better to
+  just adjust the input integers to be 0-indexed values, but I thought this was
+  a simpler approach.
+  */
   private static string[] _volumeMenuStringsArrayPD = {
     // First index: Volume
     "Exiting Program",
@@ -217,8 +260,7 @@ public static class MenuPD
   private static string[][] _subMenuStringsArrayPD = {
     // First index: Volume
     // Second index: Subsection
-    // E.g. _subMenuStringsArray[2][2] -> _subMenuString_Paul
-    new string[] { "" }, // It's impossible to get here with _volumeIdx of 0
+    new string[] { "" },
     new string[] {
     _mainMenuStringPD,
     _subMenuString_LawPD,
@@ -239,6 +281,9 @@ public static class MenuPD
     _subMenuString_LargePlatesPD
     }
   };
+
+  // All the titles have been hard-coded in, taking the burden of spelling off
+  // the user.
   private static string[][][] _bookTitlesArrayPD = {
     // First index: Volume
     // Second index: Subsection
@@ -392,8 +437,15 @@ public static class MenuPD
 
   };
 
-  
+  /*
+  This class contains attributes to keep track of what menu level the user is
+  in. This way, Program.cs doesn't have to keep track of what's already been
+  entered, and only has to supply one input integer at a time.
 
+  To be honest, it would be nicer to have the Menu class handle ALL of the menu
+  navigation logic, but since this is inherently related to the console, it's a
+  bit split between this class and the GetBook() function in Program.cs ln 89.
+  */
   public static string MainMenuPD()
   {
     return _mainMenuStringPD;
@@ -415,7 +467,12 @@ public static class MenuPD
     _bookIdxPD = inputBookIndexPD;
     return _bookTitlesArrayPD[_volumeIdxPD][_subIdxPD][_bookIdxPD];
   }
-
+  
+  /*
+  The program is intended to loop from the beginning, so this is just a
+  catch-all function to set the attributes back to initial conditions in case
+  the logic doesn't do it automatically.
+  */
   public static void ResetPD()
   {
     _volumeIdxPD = 0;

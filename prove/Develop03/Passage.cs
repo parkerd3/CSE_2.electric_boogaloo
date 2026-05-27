@@ -1,7 +1,24 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using Microsoft.VisualBasic;
+/*
+This was easily the most complicated class that I had to design, which probably
+means there's a way I could have broken it up into smaller classes. But this was
+my best initial attempt.
 
+These were the considerations I had going into this design:
+
+1.  I wanted to hide at least 3 random words at a time, and to restore 1 random
+    word at a time to visibility.
+
+2.  I wanted to guarantee that a NEW word was hidden every single time I called
+    the Obscure() method. Since I want to blank out at least 3 words, I wanted
+    to make sure the program never blanked out only 2 because it selected one
+    that was already blank
+
+3.  Likewise, I wanted to guarantee that 
+
+*/
 public class PassagePD
 {
   // Handles access to the csv file to find the text of each verse.
@@ -72,7 +89,7 @@ public class PassagePD
     Random randomPD = new();
     int indexIndexPD = randomPD.Next(_visibleWordIndicesPD.Count());
     int wordIndexPD = _visibleWordIndicesPD[indexIndexPD];
-
+    
     _visibleWordIndicesPD.RemoveAt(indexIndexPD);
     _hiddenWordIndicesPD.Add(wordIndexPD);
 
