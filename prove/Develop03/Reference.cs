@@ -5,7 +5,7 @@ public class Reference
   // Attributes
   private string _book;
   private int _chapter;
-  private List<int> _verses;
+  private List<int> _verses = new List<int>();
   private string _displayString;
 
   // Behaviors
