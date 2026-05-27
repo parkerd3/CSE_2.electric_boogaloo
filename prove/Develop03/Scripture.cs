@@ -34,7 +34,7 @@ public class Scripture
     int x = 3;
     int y = passages.Count()/2;
 
-    int hideCount = int.Min(x, y);
+    int hideCount = int.Max(x, y);
     Random random = new();
 
     int i = 0;
