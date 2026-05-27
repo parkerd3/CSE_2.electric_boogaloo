@@ -53,47 +53,47 @@ class Program
     }
     return returnValue;
   }
-  static string GetBook()
+  static string GetBookPD()
   {
-    int mainPick;
-    int volumePick;
-    int subPick;
-    string userBook;
+    int mainPickPD;
+    int volumePickPD;
+    int subPickPD;
+    string userBookPD;
     
-    MainMenu:
-    mainPick = GetUserInputInteger(Menu.MainMenu());
+    MainMenuPD:
+    mainPickPD = GetUserInputInteger(MenuPD.MainMenuPD());
     Console.Clear();
-    if (mainPick == 0) { return "quit"; }
-    if (mainPick == 5) {
+    if (mainPickPD == 0) { return "quit"; }
+    if (mainPickPD == 5) {
       // D&C
-      userBook = "Doctrine and Covenants";
-      goto Return;
+      userBookPD = "Doctrine and Covenants";
+      goto ReturnPD;
     }
 
-    VolumeMenu:
-    volumePick = GetUserInputInteger(Menu.VolumeMenu(mainPick));
+    VolumeMenuPD:
+    volumePickPD = GetUserInputInteger(MenuPD.VolumeMenuPD(mainPickPD));
     Console.Clear();
-    if (volumePick == 0) { goto MainMenu; }
-    if (mainPick == 4) {
+    if (volumePickPD == 0) { goto MainMenuPD; }
+    if (mainPickPD == 4) {
       // Pearl of Great Price
-      subPick = volumePick;
-      goto BookStringRetreival;
+      subPickPD = volumePickPD;
+      goto BookStringRetreivalPD;
     }
     
-    subPick = GetUserInputInteger(Menu.SubsectionMenu(volumePick));
+    subPickPD = GetUserInputInteger(MenuPD.SubsectionMenuPD(volumePickPD));
     Console.Clear();
-    if (subPick == 0) { goto VolumeMenu; }
+    if (subPickPD == 0) { goto VolumeMenuPD; }
 
-    BookStringRetreival:
-    userBook = Menu.BookTitle(subPick);
+    BookStringRetreivalPD:
+    userBookPD = MenuPD.BookTitlePD(subPickPD);
 
-    Return:
-    Menu.Reset();
-    return userBook;
+    ReturnPD:
+    MenuPD.ResetPD();
+    return userBookPD;
   }
-  static string GetVerses(string userBook)
+  static string GetVersesPD(string userBookPD)
   {
-    string chpVerses = GetUserInputString($"Selected book: {userBook}\n"+
+    string chpVersesPD = GetUserInputString($"Selected book: {userBookPD}\n"+
       "Please enter the desired chapter and verses.\n"+
       "Use a colon after the chapter number,\n"+
       "a hyphen to indicate a range of verses,\n"+
@@ -101,7 +101,7 @@ class Program
       "(Examples: \"3:7,8-12\", \"15:10-12,17,20\", \"2:6-12,18,21-23\")"
     );
     Console.Clear();
-    return chpVerses;
+    return chpVersesPD;
   }
 
 
@@ -118,38 +118,38 @@ class Program
     while (true)
     {
       // MENU NAVIGATION
-      string userBook = GetBook();
-      if (userBook == "quit") { break; }
+      string userBookPD = GetBookPD();
+      if (userBookPD == "quit") { break; }
 
-      string chpVerses = GetVerses(userBook);
+      string chpVersesPD = GetVersesPD(userBookPD);
 
       // SCRIPTURE DISPLAY
-      Scripture scripture = new Scripture(userBook, chpVerses);
+      ScripturePD scripturePD = new ScripturePD(userBookPD, chpVersesPD);
 
-      bool done = false;
-      while (!done)
+      bool donePD = false;
+      while (!donePD)
       {
         Console.WriteLine("| (ENTER) Hide more words | 0: Quit to Main Menu | 1: Restore one blank word |\n");
-        Console.WriteLine(scripture);
+        Console.WriteLine(scripturePD);
 
-        string userAction = Console.ReadLine();
-        if (userAction == "0")
+        string userActionPD = Console.ReadLine();
+        if (userActionPD == "0")
         {
           Console.Clear();
           break;
         }
-        else if (userAction == "1")
+        else if (userActionPD == "1")
         {
-          scripture.Restore();
+          scripturePD.RestorePD();
         }
         else
         {
-          if (scripture.AllHidden())
+          if (scripturePD.AllHiddenPD())
           {
             Console.Clear();
             break;
           }
-          scripture.Obscure();
+          scripturePD.ObscurePD();
         }
         Console.Clear();
       }

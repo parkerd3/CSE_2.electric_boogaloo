@@ -1,88 +1,88 @@
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 
-public class Scripture
+public class ScripturePD
 {
-  private Reference reference;
-  private List<Passage> passages = new();
+  private ReferencePD referencePD;
+  private List<PassagePD> passagesPD = new();
 
-  public Scripture(string bookTitle, string chpVerses)
+  public ScripturePD(string bookTitlePD, string chpVersesPD)
   {
-    reference = new Reference(bookTitle, chpVerses);
-    foreach (int i in reference.Verses())
+    referencePD = new ReferencePD(bookTitlePD, chpVersesPD);
+    foreach (int iPD in referencePD.VersesPD())
     {
-      int chp = reference.Chapter();
-      passages.Add( new Passage(bookTitle, chp, i) );
+      int chpPD = referencePD.ChapterPD();
+      passagesPD.Add( new PassagePD(bookTitlePD, chpPD, iPD) );
     }
   }
 
   public override string ToString()
   {
-    string display = reference + "\n\n";
+    string displayPD = referencePD + "\n\n";
 
-    foreach (Passage passage in passages)
+    foreach (PassagePD passagePD in passagesPD)
     {
-      display += passage + "\n";
+      displayPD += passagePD + "\n";
     }
 
-    return display + "\n";
+    return displayPD + "\n";
   }
 
-  public void Obscure()
+  public void ObscurePD()
   {
     // Will obscure at least 3 words per call, but more for a lot of verses.
     int x = 3;
-    int y = passages.Count()/2;
+    int y = passagesPD.Count()/2;
 
-    int hideCount = int.Max(x, y);
-    Random random = new();
+    int hideCountPD = int.Max(x, y);
+    Random randomPD = new();
 
-    int i = 0;
-    while (i < hideCount)
+    int iPD = 0;
+    while (iPD < hideCountPD)
     {
-      int shoot = random.Next(passages.Count());
-      if (!passages[shoot].IsAllHidden())
+      int shootPD = randomPD.Next(passagesPD.Count());
+      if (!passagesPD[shootPD].IsAllHiddenPD())
       {
-        passages[shoot].Obscure();
-        i ++;
+        passagesPD[shootPD].ObscurePD();
+        iPD ++;
       }
-      else if (AllHidden()){ break; }
+      else if (AllHiddenPD()){ break; }
     }
   }
 
-  public void Restore()
+  public void RestorePD()
   {
-    bool dekita = false;
-    Random random = new();
+    bool dekitaPD = false;
+    Random randomPD = new();
 
-    while (!dekita)
+    while (!dekitaPD)
     {
-      int shoot = random.Next(passages.Count());
-      if (!passages[shoot].IsAllVisible())
+      int shootPD = randomPD.Next(passagesPD.Count());
+      if (!passagesPD[shootPD].IsAllVisiblePD())
       {
-        passages[shoot].Restore();
-        dekita = true;
+        passagesPD[shootPD].RestorePD();
+        dekitaPD = true;
       }
-      else if (AllVisible()){ break; }
+      else if (AllVisiblePD()){ break; }
     }
   }
 
-  public bool AllHidden()
+  public bool AllHiddenPD()
   {
-    foreach (Passage passage in passages)
+    foreach (PassagePD passagePD in passagesPD)
     {
-      if (!passage.IsAllHidden())
+      if (!passagePD.IsAllHiddenPD())
       {
         return false;
       }
     }
     return true;
   }
-  private bool AllVisible()
+  private bool AllVisiblePD()
   {
-    foreach (Passage passage in passages)
+    foreach (PassagePD passagePD in passagesPD)
     {
-      if (!passage.IsAllVisible())
+      if (!passagePD.IsAllVisiblePD())
       {
         return false;
       }

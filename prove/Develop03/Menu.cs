@@ -1,12 +1,12 @@
 using System.ComponentModel;
 
-public static class Menu
+public static class MenuPD
 {
-  private static int _volumeIdx = 0;
-  private static int _subIdx = 0;
-  private static int _bookIdx = 0;
+  private static int _volumeIdxPD = 0;
+  private static int _subIdxPD = 0;
+  private static int _bookIdxPD = 0;
 
-  private static string _mainMenuString = """
+  private static string _mainMenuStringPD = """
   MAIN MENU
   Choose a volume (Enter a number 0-5):
   0. (Quit)
@@ -17,7 +17,7 @@ public static class Menu
   5. Doctrine and Covenants
   """,
 
-  _volumeMenuStringOT = """
+  _volumeMenuStringOTPD = """
   OLD TESTAMENT
   Choose a subsection:
      [Section]            [From] >> [To]
@@ -29,7 +29,7 @@ public static class Menu
   5. The Prophets (2/2) | Jonah     Malachi
   """,
 
-  _subMenuString_Law = """
+  _subMenuString_LawPD = """
   THE LAW (OLD TESTAMENT)
   Select book:
   0. (Go Back)
@@ -40,7 +40,7 @@ public static class Menu
   5. Deuteronomy
   """,
 
-  _subMenuString_History = """
+  _subMenuString_HistoryPD = """
   HISTORY (OLD TESTAMENT)
   Select book:
    0. (Go Back)
@@ -58,7 +58,7 @@ public static class Menu
   12. Esther
   """,
 
-  _subMenuString_Poetry = """
+  _subMenuString_PoetryPD = """
   POETRY (OLD TESTAMENT)
   Select book:
   0. (Go Back)
@@ -69,7 +69,7 @@ public static class Menu
   5. Song of Solomon
   """,
 
-  _subMenuString_Prophets1 = """
+  _subMenuString_Prophets1PD = """
   THE PROPHETS pg 1/2 (OLD TESTAMENT)
   Select book:
   0. (Go Back)
@@ -84,7 +84,7 @@ public static class Menu
   9. Obadiah
   """,
 
-  _subMenuString_Prophets2 = """
+  _subMenuString_Prophets2PD = """
   THE PROPHETS pg 2/2 (OLD TESTAMENT)
   Select book:
   0. (Go Back)
@@ -98,7 +98,7 @@ public static class Menu
   8. Malachi
   """,
 
-  _volumeMenuStringNT = """
+  _volumeMenuStringNTPD = """
   NEW TESTAMENT
   Choose a subsection:
      [Section]            [From] >> [To]
@@ -108,7 +108,7 @@ public static class Menu
   3. General Epistles + | James   Revelation
   """,
 
-  _subMenuString_Gospels = """
+  _subMenuString_GospelsPD = """
   THE FOUR GOSPELS + ACTS (NEW TESTAMENT)
   Select book:
   0. (Go Back)
@@ -119,7 +119,7 @@ public static class Menu
   5. Acts
   """,
 
-  _subMenuString_Paul = """
+  _subMenuString_PaulPD = """
   THE EPISTLES OF PAUL (NEW TESTAMENT)
   Select book:
    0. (Go Back)
@@ -139,7 +139,7 @@ public static class Menu
   14. Hebrews
   """, // Dadgum Paul was a yapper.
 
-  _subMenuString_Epistles = """
+  _subMenuString_EpistlesPD = """
   THE GENERAL EPISTLES + REVELATION (NEW TESTAMENT)
   Select book:
   0. (Go Back)
@@ -153,7 +153,7 @@ public static class Menu
   8. Revelation
   """,
 
-  _volumeMenuStringBM = """
+  _volumeMenuStringBMPD = """
   THE BOOK OF MORMON
   Choose a subsection:
      [Section]                [From]     >>     [To]
@@ -162,7 +162,7 @@ public static class Menu
   2. Mormon's Abridgement   | Words of Mormon   Moroni
   """,
 
-  _subMenuString_SmallPlates = """
+  _subMenuString_SmallPlatesPD = """
   THE SMALL PLATES OF NEPHI (BOOK OF MORMON)
   Select book:
   0. (Go Back)
@@ -174,7 +174,7 @@ public static class Menu
   6. Omni
   """,
 
-  _subMenuString_LargePlates = """
+  _subMenuString_LargePlatesPD = """
   MORMON'S ABRIDGEMENT (BOOK OF MORMON)
   Select book:
   0. (Go Back)
@@ -189,7 +189,7 @@ public static class Menu
   9. Moroni
   """,
 
-  _volumeMenuStringPP = """
+  _volumeMenuStringPPPD = """
   THE PEARL OF GREAT PRICE
   Select book:
   0. (Go Back)
@@ -200,46 +200,46 @@ public static class Menu
   5. Articles of Faith
   """,
 
-  _askForChapter = """
+  _askForChapterPD = """
   Enter chapter number:
   """;
 
-  private static string[] _volumeMenuStringsArray = {
+  private static string[] _volumeMenuStringsArrayPD = {
     // First index: Volume
     "Exiting Program",
-    _volumeMenuStringOT,
-    _volumeMenuStringNT,
-    _volumeMenuStringBM,
-    _volumeMenuStringPP,
-    _askForChapter
+    _volumeMenuStringOTPD,
+    _volumeMenuStringNTPD,
+    _volumeMenuStringBMPD,
+    _volumeMenuStringPPPD,
+    _askForChapterPD
     };
   
-  private static string[][] _subMenuStringsArray = {
+  private static string[][] _subMenuStringsArrayPD = {
     // First index: Volume
     // Second index: Subsection
     // E.g. _subMenuStringsArray[2][2] -> _subMenuString_Paul
     new string[] { "" }, // It's impossible to get here with _volumeIdx of 0
     new string[] {
-    _mainMenuString,
-    _subMenuString_Law,
-    _subMenuString_History,
-    _subMenuString_Poetry,
-    _subMenuString_Prophets1,
-    _subMenuString_Prophets2
+    _mainMenuStringPD,
+    _subMenuString_LawPD,
+    _subMenuString_HistoryPD,
+    _subMenuString_PoetryPD,
+    _subMenuString_Prophets1PD,
+    _subMenuString_Prophets2PD
     },
     new string[] {
-    _mainMenuString,
-    _subMenuString_Gospels,
-    _subMenuString_Paul,
-    _subMenuString_Epistles
+    _mainMenuStringPD,
+    _subMenuString_GospelsPD,
+    _subMenuString_PaulPD,
+    _subMenuString_EpistlesPD
     },
     new string[] {
-    _mainMenuString,
-    _subMenuString_SmallPlates,
-    _subMenuString_LargePlates
+    _mainMenuStringPD,
+    _subMenuString_SmallPlatesPD,
+    _subMenuString_LargePlatesPD
     }
   };
-  private static string[][][] _bookTitlesArray = {
+  private static string[][][] _bookTitlesArrayPD = {
     // First index: Volume
     // Second index: Subsection
     // Third index: Book title
@@ -253,7 +253,7 @@ public static class Menu
         "",
       },
       new string [] { // Law
-        _volumeMenuStringOT,
+        _volumeMenuStringOTPD,
         "Genesis",
         "Exodus",
         "Leviticus",
@@ -261,7 +261,7 @@ public static class Menu
         "Deuteronomy"
       },
       new string [] { // History
-        _volumeMenuStringOT,
+        _volumeMenuStringOTPD,
         "Joshua",
         "Judges",
         "Ruth",
@@ -276,7 +276,7 @@ public static class Menu
         "Esther"
       },
       new string [] { // Poetry
-        _volumeMenuStringOT,
+        _volumeMenuStringOTPD,
         "Job",
         "Psalms",
         "Proverbs",
@@ -284,7 +284,7 @@ public static class Menu
         "Song of Solomon"
       },
       new string [] { // Prophets1
-        _volumeMenuStringOT,
+        _volumeMenuStringOTPD,
         "Isaiah",
         "Jeremiah",
         "Lamentations",
@@ -296,7 +296,7 @@ public static class Menu
         "Obadiah"
       },
       new string [] { // Prophets2
-        _volumeMenuStringOT,
+        _volumeMenuStringOTPD,
         "Jonah",
         "Micah",
         "Nahum",
@@ -312,7 +312,7 @@ public static class Menu
         ""
       },
       new string [] { // Gospels
-        _volumeMenuStringNT,
+        _volumeMenuStringNTPD,
         "Matthew",
         "Mark",
         "Luke",
@@ -320,7 +320,7 @@ public static class Menu
         "Acts"
       },
       new string [] { // Paul
-        _volumeMenuStringNT,
+        _volumeMenuStringNTPD,
         "Romans",
         "1 Corinthians",
         "2 Corinthians",
@@ -337,7 +337,7 @@ public static class Menu
         "Hebrews"
       },
       new string [] { // Epistles
-        _volumeMenuStringNT,
+        _volumeMenuStringNTPD,
         "James",
         "1 Peter",
         "2 Peter",
@@ -353,7 +353,7 @@ public static class Menu
         "",
       },
       new string [] { // Small
-        _volumeMenuStringBM,
+        _volumeMenuStringBMPD,
         "1 Nephi",
         "2 Nephi",
         "Jacob",
@@ -362,7 +362,7 @@ public static class Menu
         "Omni"
       },
       new string [] { // Large
-        _volumeMenuStringBM,
+        _volumeMenuStringBMPD,
         "Words of Mormon",
         "Mosiah",
         "Alma",
@@ -394,33 +394,33 @@ public static class Menu
 
   
 
-  public static string MainMenu()
+  public static string MainMenuPD()
   {
-    return _mainMenuString;
+    return _mainMenuStringPD;
   }
-  public static string VolumeMenu(int inputVolumeIdx)
+  public static string VolumeMenuPD(int inputVolumeIdxPD)
   {
-    _volumeIdx = inputVolumeIdx;
-    return _volumeMenuStringsArray[_volumeIdx];
+    _volumeIdxPD = inputVolumeIdxPD;
+    return _volumeMenuStringsArrayPD[_volumeIdxPD];
   }
   
-  public static string SubsectionMenu(int inputSubIndex)
+  public static string SubsectionMenuPD(int inputSubIndexPD)
   {
-    _subIdx = inputSubIndex;
-    return _subMenuStringsArray[_volumeIdx][_subIdx];
+    _subIdxPD = inputSubIndexPD;
+    return _subMenuStringsArrayPD[_volumeIdxPD][_subIdxPD];
   }
 
-  public static string BookTitle(int inputBookIndex)
+  public static string BookTitlePD(int inputBookIndexPD)
   {
-    _bookIdx = inputBookIndex;
-    return _bookTitlesArray[_volumeIdx][_subIdx][_bookIdx];
+    _bookIdxPD = inputBookIndexPD;
+    return _bookTitlesArrayPD[_volumeIdxPD][_subIdxPD][_bookIdxPD];
   }
 
-  public static void Reset()
+  public static void ResetPD()
   {
-    _volumeIdx = 0;
-    _subIdx = 0;
-    _bookIdx = 0;
+    _volumeIdxPD = 0;
+    _subIdxPD = 0;
+    _bookIdxPD = 0;
   }
 
 }

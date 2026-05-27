@@ -1,20 +1,20 @@
-public class Word
+public class WordPD
 {
-  private string _text;
+  private string _textPD;
 
-  public Word(string word)
+  public WordPD(string wordPD)
   {
-    _text = word;
+    _textPD = wordPD;
   }
  
-  public void Obscure()
+  public void ObscurePD()
   {
-    int length = _text.Length;
-    _text = new string('_', length);
+    int lengthPD = _textPD.Length;
+    _textPD = new string('_', lengthPD);
   }
 
   public override string ToString()
   {
-    return _text;
+    return _textPD;
   }
 }

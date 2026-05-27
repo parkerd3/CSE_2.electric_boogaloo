@@ -1,40 +1,52 @@
 using System.Data;
 
-public class Reference
+public class ReferencePD
 {
   // Attributes
-  private string _book;
-  private int _chapter;
-  private List<int> _verses = new List<int>();
-  private string _displayString;
+  private string _bookPD;
+  private int _chapterPD;
+  private List<int> _versesPD = new List<int>();
+  private string _displayStringPD;
 
   // Behaviors
-  public List<int> Verses() { return _verses; }
-  public string Book() { return _book; }
-  public int Chapter() { return _chapter; }
+  public List<int> VersesPD()
+  {
+    return _versesPD;
+  }
 
-  public override string ToString() { return _displayString; }
+  public string BookPD()
+  {
+
+    return _bookPD;
+  }
+
+  public int ChapterPD()
+  {
+    return _chapterPD;
+  }
+
+  public override string ToString() { return _displayStringPD; }
 
   // Constructor
-  public Reference(string book, string chpVerses)
+  public ReferencePD(string bookPD, string chpVersesPD)
   { 
-    _displayString = $"{book} {chpVerses}";
-    _book = book;
-    _chapter = int.Parse(chpVerses.Split(":")[0]);
+    _displayStringPD = $"{bookPD} {chpVersesPD}";
+    _bookPD = bookPD;
+    _chapterPD = int.Parse(chpVersesPD.Split(":")[0]);
 
-    string[] verseStrings = chpVerses.Split(":")[1].Split(",");
-    foreach (string vsStr in verseStrings)
+    string[] verseStringsPD = chpVersesPD.Split(":")[1].Split(",");
+    foreach (string vsStrPD in verseStringsPD)
     {
-      if ( vsStr.Contains('-') )
+      if ( vsStrPD.Contains('-') )
       {
-        string[] startEnd = vsStr.Split("-");
+        string[] startEndPD = vsStrPD.Split("-");
 
-        int start = int.Parse(startEnd[0]);
-        int end = int.Parse(startEnd[1]);
+        int startPD = int.Parse(startEndPD[0]);
+        int endPD = int.Parse(startEndPD[1]);
 
-        for (int i = start; i < end + 1; i++) { _verses.Add(i); }
+        for (int i = startPD; i < endPD + 1; i++) { _versesPD.Add(i); }
       }
-      else { _verses.Add(int.Parse(vsStr)); }
+      else { _versesPD.Add(int.Parse(vsStrPD)); }
     }
   }
 }

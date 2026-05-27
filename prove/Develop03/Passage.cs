@@ -2,158 +2,158 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using Microsoft.VisualBasic;
 
-public class Passage
+public class PassagePD
 {
   // Handles access to the csv file to find the text of each verse.
   // Contains both the unaltered original passage, and the version with hidden
   // words.
   // Contains a list of indices for both the hidden and visible words in
   // the obscured package to aid the Obscure and Restore methods.
-  private string _scriptureCSVFileName = "lds-scriptures.csv";
-  private string _verseNumber;
+  private string _scriptureCSVFileNamePD = "lds-scriptures.csv";
+  private string _verseNumberPD;
 
-  private readonly List<Word> _scriptureText = [];
-  private List<Word> _obscuredText = [];
+  private readonly List<WordPD> _scriptureTextPD = [];
+  private List<WordPD> _obscuredTextPD = [];
 
-  private List<int> _visibleWordIndices = [];
-  private List<int> _hiddenWordIndices = [];
+  private List<int> _visibleWordIndicesPD = [];
+  private List<int> _hiddenWordIndicesPD = [];
 
-  public Passage(string book, int chapter, int verse)
+  public PassagePD(string bookPD, int chapterPD, int versePD)
   {
-    _verseNumber = verse.ToString();
-    List<string> data = FindRow(book, chapter, verse);
-    string raw_text = data[16];
-    string[] words = raw_text.Split(" ");
+    _verseNumberPD = versePD.ToString();
+    List<string> dataPD = FindRowPD(bookPD, chapterPD, versePD);
+    string raw_textPD = dataPD[16];
+    string[] wordsPD = raw_textPD.Split(" ");
 
-    foreach (string word in words)
+    foreach (string wordPD in wordsPD)
     {
-      _scriptureText.Add(new Word(word));
-      _obscuredText.Add(new Word(word));
+      _scriptureTextPD.Add(new WordPD(wordPD));
+      _obscuredTextPD.Add(new WordPD(wordPD));
     }
 
-    for (int i = 0; i < _obscuredText.Count(); i++)
+    for (int iPD = 0; iPD < _obscuredTextPD.Count(); iPD++)
     {
-      _visibleWordIndices.Add(i);
+      _visibleWordIndicesPD.Add(iPD);
     }
   }
 
   public override string ToString()
   {
-    string display = "";
-    int lineWidth;
-    string line = $"{_verseNumber}.";
+    string displayPD = "";
+    int lineWidthPD;
+    string linePD = $"{_verseNumberPD}.";
 
     // Construct paragraphs less than 40 characters wide for readability.
-    foreach (Word word in _obscuredText)
+    foreach (WordPD wordPD in _obscuredTextPD)
     {
-      string text = word.ToString();
-      lineWidth = line.Length;
-      if (lineWidth + text.Length >= 40)
+      string textPD = wordPD.ToString();
+      lineWidthPD = linePD.Length;
+      if (lineWidthPD + textPD.Length >= 40)
       {
-        display += line + "\n";
-        line = "";
-        line += text;
+        displayPD += linePD + "\n";
+        linePD = "";
+        linePD += textPD;
       }
       else
       {
-        line += " " + text;
+        linePD += " " + textPD;
       }
     }
     // Clean up final line that is less than 40 characters
-    display += line + "\n";
+    displayPD += linePD + "\n";
     
-    return display;
+    return displayPD;
   }
 
   // Hidden/Visible indices are kept track of to make sure that every call to
   // these methods will always hide a new word/restore a hidden word.
-  public void Obscure()
+  public void ObscurePD()
   {
-    Random random = new();
-    int indexIndex = random.Next(_visibleWordIndices.Count());
-    int wordIndex = _visibleWordIndices[indexIndex];
+    Random randomPD = new();
+    int indexIndexPD = randomPD.Next(_visibleWordIndicesPD.Count());
+    int wordIndexPD = _visibleWordIndicesPD[indexIndexPD];
 
-    _visibleWordIndices.RemoveAt(indexIndex);
-    _hiddenWordIndices.Add(wordIndex);
+    _visibleWordIndicesPD.RemoveAt(indexIndexPD);
+    _hiddenWordIndicesPD.Add(wordIndexPD);
 
-    _obscuredText[wordIndex].Obscure();
+    _obscuredTextPD[wordIndexPD].ObscurePD();
 
   }
 
-  public void Restore()
+  public void RestorePD()
   {
-    Random random = new();
-    int indexIndex = random.Next(_hiddenWordIndices.Count());
-    int wordIndex = _hiddenWordIndices[indexIndex];
+    Random randomPD = new();
+    int indexIndexPD = randomPD.Next(_hiddenWordIndicesPD.Count());
+    int wordIndexPD = _hiddenWordIndicesPD[indexIndexPD];
 
-    _hiddenWordIndices.RemoveAt(indexIndex);
-    _visibleWordIndices.Add(wordIndex);
+    _hiddenWordIndicesPD.RemoveAt(indexIndexPD);
+    _visibleWordIndicesPD.Add(wordIndexPD);
 
-    string originalWord = _scriptureText[wordIndex].ToString();
-    _obscuredText[wordIndex] = new Word(originalWord);
+    string originalWordPD = _scriptureTextPD[wordIndexPD].ToString();
+    _obscuredTextPD[wordIndexPD] = new WordPD(originalWordPD);
   }
 
   // Flags that Scripture Class will use to make sure it doesn't ask a passage
   // to obscure/restore any words when there are none to do so.
-  public bool IsAllVisible()
+  public bool IsAllVisiblePD()
   {
-    return _visibleWordIndices.Count() == _scriptureText.Count();
+    return _visibleWordIndicesPD.Count() == _scriptureTextPD.Count();
   }
-  public bool IsAllHidden()
+  public bool IsAllHiddenPD()
   {
-    return _hiddenWordIndices.Count() == _scriptureText.Count();
+    return _hiddenWordIndicesPD.Count() == _scriptureTextPD.Count();
   }
 
-  private List<string> FindRow(string targetBook, int targetChapter, int targetVerse)
+  private List<string> FindRowPD(string targetBookPD, int targetChapterPD, int targetVersePD)
   {
-    bool Found = false;
-    using (StreamReader reader = new StreamReader(_scriptureCSVFileName))
+    bool FoundPD = false;
+    using (StreamReader readerPD = new StreamReader(_scriptureCSVFileNamePD))
     {
-      List<string> columns = new List<string>();
-      while (!Found)
+      List<string> columnsPD = new List<string>();
+      while (!FoundPD)
       {
-        string line = reader.ReadLine();
+        string linePD = readerPD.ReadLine();
         
-        columns.Clear();
-        bool inQuotes = false;
-        string value = "";
+        columnsPD.Clear();
+        bool inQuotesPD = false;
+        string valuePD = "";
 
         // Custom logic to deal with the fact that there are commas in my CSV.
-        foreach (char c in line)
+        foreach (char cPD in linePD)
         {
-          if (c == '"')
+          if (cPD == '"')
           {
-            inQuotes = !inQuotes;
+            inQuotesPD = !inQuotesPD;
             // value += c;
             continue;
           }
 
-          if (inQuotes)
+          if (inQuotesPD)
           {
-            value += c;
+            valuePD += cPD;
             continue;
           }
         
-          if (c == ',')
+          if (cPD == ',')
           {
-            columns.Add(value);
-            value = "";
+            columnsPD.Add(valuePD);
+            valuePD = "";
             continue;
           }
-          else { value += c; }
+          else { valuePD += cPD; }
         }
 
         // Now I can ACTUALLY check if this is the correct row.
         if ( 
-          targetBook == columns[5] && 
-          targetChapter == int.Parse(columns[14]) &&
-          targetVerse == int.Parse(columns[15])
+          targetBookPD == columnsPD[5] && 
+          targetChapterPD == int.Parse(columnsPD[14]) &&
+          targetVersePD == int.Parse(columnsPD[15])
         )
         {
-          Found = true;
+          FoundPD = true;
         }
       }
-      return columns;
+      return columnsPD;
     }
   }
 }
