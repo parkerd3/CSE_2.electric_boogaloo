@@ -148,7 +148,13 @@ classDiagram
             + ToString() String
         }
         class Passage {
-
+            - String LDSCanonFileName = "lds-scriptures.csv"
+            - String _scriptureText
+            - String _obscuredText
+            + Word(Reference)
+            + Obscure() void
+            + Restore() void
+            + ToString() String 
         }
         class Reference {
             - String _book
@@ -160,14 +166,11 @@ classDiagram
             + ToString()
         }
         class Word {
-            - String LDSCanonFileName = "lds-scriptures.csv"
-            - String BibleFileName = "kjv-scriptures.csv"
-            - String _scriptureText
-            - String _obscuredText
-            + Word(Reference)
+            - String _text
+            - Bool _isObscured
             + Obscure() void
             + Restore() void
-            + ToString() String 
+            + IsObscured() bool
         }
     }
     Program ..> Menu : Calls to get<br>menu strings<br>for display.

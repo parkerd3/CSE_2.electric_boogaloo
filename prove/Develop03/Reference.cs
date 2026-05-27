@@ -26,7 +26,7 @@ public class Reference
     {
       if ( vsStr.Contains('-') )
       {
-        string[] startEnd = vsStr.Split();
+        string[] startEnd = vsStr.Split("-");
 
         int start = int.Parse(startEnd[0]);
         int end = int.Parse(startEnd[1]);
