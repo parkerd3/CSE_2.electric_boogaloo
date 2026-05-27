@@ -148,6 +148,8 @@ class Program
     Console.ReadLine();
     Console.Clear();
     
+    // We use "break" to exit the program instead of a flag so that the code
+    // after the menu doesn't execute if the user decides to quit.
     while (true)
     {
       // MENU NAVIGATION
@@ -181,6 +183,7 @@ class Program
           {
             Console.Clear();
             break;
+            // Six layers deep is vile... forgive my excessive nesting.
           }
           scripturePD.ObscurePD();
         }

@@ -16,16 +16,32 @@ These were the considerations I had going into this design:
     to make sure the program never blanked out only 2 because it selected one
     that was already blank
 
-3.  Likewise, I wanted to guarantee that 
+3.  Likewise, I wanted to guarantee that the Restore() method always correctly
+    identified and restored a word that was blanked out, and none that were
+    already visible.
 
+So with these goals in mind, I knew that I would need a way to keep track of all
+of the words that had already been hidden, and all the ones that were still
+visible. The approach I went with was to have a list of the indices of all the
+hidden words, and all the visible words, that I could move indices back and
+forth between whenever I picked one to hide/restore.
+
+...I didn't realize until later that I could have just created a list of the
+words themselves instead of keeping track of them via their indices.
 */
 public class PassagePD
 {
-  // Handles access to the csv file to find the text of each verse.
-  // Contains both the unaltered original passage, and the version with hidden
-  // words.
-  // Contains a list of indices for both the hidden and visible words in
-  // the obscured package to aid the Obscure and Restore methods.
+  /*
+  Right now this class is the one which accesses the Canon database. It also
+  keeps an original copy of the scripture text, for the purpose of restoring
+  words to visibility.
+
+  Tbh, I really don't like how clunky this approach is. Now that I know I can
+  keep track of hidden/visible words by moving the words themselves between
+  verses, I'd like to move the responsibility of keeping an original copy of the
+  text to the word class. I'll probably do that after this submission though on
+  my own time.
+  */
   private string _scriptureCSVFileNamePD = "lds-scriptures.csv";
   private string _verseNumberPD;
 
@@ -121,6 +137,7 @@ public class PassagePD
     return _hiddenWordIndicesPD.Count() == _scriptureTextPD.Count();
   }
 
+  // This was an absolute rodeo of a time to figure out how to code.
   private List<string> FindRowPD(string targetBookPD, int targetChapterPD, int targetVersePD)
   {
     bool FoundPD = false;
@@ -135,13 +152,16 @@ public class PassagePD
         bool inQuotesPD = false;
         string valuePD = "";
 
-        // Custom logic to deal with the fact that there are commas in my CSV.
+        // There are commas that appear within double quotes in my CSV that are
+        // not delimiters, which is what the following logic was written to 
+        // address:
         foreach (char cPD in linePD)
         {
           if (cPD == '"')
           {
             inQuotesPD = !inQuotesPD;
-            // value += c;
+            // Notice we do NOT add c. That way our titles and verses will
+            // already be free of those characters when we refrence them later.
             continue;
           }
 

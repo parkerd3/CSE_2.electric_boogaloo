@@ -1,3 +1,8 @@
+/*
+What a lonely little class. As I say in the comments within Passage.cs, I think
+the Restore method would be better suited for this class. But I will rewrite the
+program and Word classes for this purpose later.
+*/
 public class WordPD
 {
   private string _textPD;
