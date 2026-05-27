@@ -28,8 +28,8 @@ public class Passage
     foreach (string word in words)
     {
       _scriptureText.Add(new Word(word));
+      _obscuredText.Add(new Word(word));
     }
-    _obscuredText = _scriptureText;
 
     for (int i = 0; i < _obscuredText.Count(); i++)
     {
@@ -89,8 +89,8 @@ public class Passage
     _hiddenWordIndices.RemoveAt(indexIndex);
     _visibleWordIndices.Add(wordIndex);
 
-    _obscuredText[wordIndex] = _scriptureText[wordIndex];
-
+    string originalWord = _scriptureText[wordIndex].ToString();
+    _obscuredText[wordIndex] = new Word(originalWord);
   }
 
   // Flags that Scripture Class will use to make sure it doesn't ask a passage

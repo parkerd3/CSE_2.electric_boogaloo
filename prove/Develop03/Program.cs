@@ -146,6 +146,7 @@ class Program
         {
           if (scripture.AllHidden())
           {
+            Console.Clear();
             break;
           }
           scripture.Obscure();

@@ -6,7 +6,7 @@ public class Word
   {
     _text = word;
   }
-
+ 
   public void Obscure()
   {
     int length = _text.Length;
