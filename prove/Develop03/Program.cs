@@ -9,7 +9,7 @@ https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/
 https://learn.microsoft.com/en-us/dotnet/csharp/how-to/parse-strings-using-split
 - How to use the .Split() method
 https://learn.microsoft.com/en-us/dotnet/api/system.string.contains?view=netframework-4.8.1
-- How to use the .Contains() method to parse a verse string.
+- How to use the .Contains() method to parse a verse string. (see Reference class).
 */
 class Program
 {
@@ -31,6 +31,7 @@ class Program
     }
     return returnValue;
   }
+
   static string GetUserInputString(string Prompt)
   {
     string returnValue = "";
@@ -52,62 +53,99 @@ class Program
     }
     return returnValue;
   }
+  static string GetBook()
+  {
+    int mainPick;
+    int volumePick;
+    int subPick;
+    string userBook;
+    
+    MainMenu:
+    mainPick = GetUserInputInteger(Menu.MainMenu());
+    Console.Clear();
+    if (mainPick == 0) { return "quit"; }
+    if (mainPick == 5) {
+      // D&C
+      userBook = "Doctrine and Covenants";
+      goto Return;
+    }
+
+    VolumeMenu:
+    volumePick = GetUserInputInteger(Menu.VolumeMenu(mainPick));
+    Console.Clear();
+    if (volumePick == 0) { goto MainMenu; }
+    if (mainPick == 4) {
+      // Pearl of Great Price
+      subPick = volumePick;
+      goto BookStringRetreival;
+    }
+    
+    subPick = GetUserInputInteger(Menu.SubsectionMenu(volumePick));
+    Console.Clear();
+    if (subPick == 0) { goto VolumeMenu; }
+
+    BookStringRetreival:
+    userBook = Menu.BookTitle(subPick);
+
+    Return:
+    Menu.Reset();
+    return userBook;
+  }
+  static string GetVerses(string userBook)
+  {
+    string chpVerses = GetUserInputString($"Selected book: {userBook}\n"+
+      "Please enter the desired chapter and verses.\n"+
+      "Use a colon after the chapter number,\n"+
+      "a hyphen to indicate a range of verses,\n"+
+      "and commas to indicate disjoint verses.\n"+
+      "(Examples: \"3:7,8-12\", \"15:10-12,17,20\", \"2:6-12,18,21-23\")"
+    );
+    return chpVerses;
+  }
+
+
+  // MAIN
   static void Main(string[] args)
   {
-    bool quitFlag = true;
-
     Console.WriteLine(
       "Welcome to Scripture Memorizer!\n"+
       "Please press ENTER to continue:"
     );
     Console.ReadLine();
     Console.Clear();
-    do
+    
+    while (true)
     {
       // MENU NAVIGATION
-      int mainPick;
-      int volumePick;
-      int subPick;
-      string userBook;
-      
-      MainMenu:
-      mainPick = GetUserInputInteger(Menu.MainMenu());
-      Console.Clear();
-      if (mainPick == 0) { break; }
-      if (mainPick == 5) {
-        // D&C
-        userBook = "Doctrine and Covenants";
-        goto ReferenceQuery;
-      }
+      string userBook = GetBook();
+      if (userBook == "quit") { break; }
 
-      VolumeMenu:
-      volumePick = GetUserInputInteger(Menu.VolumeMenu(mainPick));
-      Console.Clear();
-      if (volumePick == 0) { goto MainMenu; }
-      if (mainPick == 4) {
-        // Pearl of Great Price
-        subPick = volumePick;
-        goto BookStringRetreival;
-      }
-      
-      subPick = GetUserInputInteger(Menu.SubsectionMenu(volumePick));
-      Console.Clear();
-      if (subPick == 0) { goto VolumeMenu; }
-
-      BookStringRetreival:
-      userBook = Menu.BookTitle(subPick);
-
-      ReferenceQuery:
-      string chpVerses = GetUserInputString($"Selected book: {userBook}\n"+
-        "Please enter the desired chapter and verses.\n"+
-        "Use a colon after the chapter number,\n"+
-        "a hyphen to indicate a range of verses,\n"+
-        "and commas to indicate disjoint verses.\n"+
-        "(Examples: \"3:7,8-12\", \"15:10-12,17,20\", \"2:6-12,18,21-23\")"
-      );
+      string chpVerses = GetVerses(userBook);
 
       // SCRIPTURE DISPLAY
+      Scripture scripture = new Scripture(userBook, chpVerses);
 
-    } while (quitFlag);
+      while (!scripture.AllHidden())
+      {
+        Console.WriteLine("| (ENTER) Hide more words | 0: Quit to Main Menu | 1: Restore one blank word |\n");
+        Console.WriteLine(scripture);
+
+        string userAction = Console.ReadLine();
+        if (userAction == "0")
+        {
+          Console.Clear();
+          break;
+        }
+        else if (userAction == "1")
+        {
+          scripture.Restore();
+        }
+        else
+        {
+          scripture.Obscure();
+        }
+        Console.Clear();
+      }
+    }
   }
 }

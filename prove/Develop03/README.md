@@ -16,7 +16,7 @@ Here are the pages associated with this assignment:
 
 - Scripture
 
-  - Creates and manages the Reference and Word classes
+  - Creates and manages the Reference and Passage classes
 
   - Responsible for formatting and providing strings for the program to display
 
@@ -30,19 +30,36 @@ Here are the pages associated with this assignment:
 
 - Word
 
-  - Contains the actual text of a given exerpt
+  - Contains literally just one word
 
-  - Responsible for accessing the CSV files containing the scriptures
-
-  - Responsible for the creation of the blanked out verses
+  - Responsible for hiding that word
 
 #### My Classes
 
 - Menu
 
+  - Allows the user to select the book from which they would like to memorize a
+    scripture
+
   - Contains multiple raw string literals of each menu layer
   
   - Responsible for returning the correct menu screen given an integer input
+
+- Passage
+
+  - There's meant to be one verse per passage object.
+
+  - Composed of a list of Word objects
+
+  - Responsible for keeping track of which words have been hidden and which are
+    still visible
+
+  - Responsible for telling words when to obscure themselves
+
+  - Responsible for restoring words to be visible
+
+  - Responsible for formatting display strings to be less than about 40-50
+    characters wide
 
 ### Class Diagram
 
@@ -70,10 +87,9 @@ classDiagram
         }
     }
     
-    note for Reference "Reference class handles<br>turning the user input<br>into a useful list of<br>integers."
-    note for Word "Takes in a Reference object<br>at construction, then<br>accesses the csv files for the<br>appropriate scripture texts."
+    
     namespace Scripture_Handling{
-        
+        note for Reference "Reference class handles<br>turning the user input<br>into a useful list of<br>integers."
         class Scripture {
             - Reference _reference
             - List~Passage~ _passages
@@ -137,7 +153,7 @@ classDiagram
 
 ### Menu Navigation
 
-(for my own sanity)
+(for my own (in)sanity)
 
 ```mermaid
 flowchart LR

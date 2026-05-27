@@ -11,6 +11,7 @@ public class Reference
   // Behaviors
   public List<int> Verses() { return _verses; }
   public string Book() { return _book; }
+  public int Chapter() { return _chapter; }
 
   public override string ToString() { return _displayString; }
 

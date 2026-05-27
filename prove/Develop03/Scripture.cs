@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 
 public class Scripture
@@ -24,23 +25,66 @@ public class Scripture
       display += passage + "\n";
     }
 
-    return display;
+    return display + "\n";
   }
 
   public void Obscure()
   {
+    // Will obscure at least 3 words per call, but more for a lot of verses.
     int hideCount = int.Min(3, passages.Count()/2);
     Random random = new();
-    for (int i = 0; i < hideCount; i++)
+
+    int i = 0;
+    while (i < hideCount)
     {
-      int idx = random.Next(hideCount);
-      // TODO: Make it so that this loops until every word is hidden, or until
-      // Passage.Obscure() has been successfully called hideCount times.
+      int shoot = random.Next(passages.Count());
+      if (!passages[shoot].IsAllHidden())
+      {
+        passages[shoot].Obscure();
+        i ++;
+      }
+      else if (AllHidden()){ break; }
     }
   }
 
   public void Restore()
   {
-    
+    bool dekita = false;
+    Random random = new();
+
+    while (!dekita)
+    {
+      int shoot = random.Next(passages.Count());
+      if (!passages[shoot].IsAllVisible())
+      {
+        passages[shoot].Restore();
+        dekita = true;
+      }
+      else if (AllVisible()){ break; }
+    }
   }
+
+  public bool AllHidden()
+  {
+    foreach (Passage passage in passages)
+    {
+      if (!passage.IsAllHidden())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+  private bool AllVisible()
+  {
+    foreach (Passage passage in passages)
+    {
+      if (!passage.IsAllVisible())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
