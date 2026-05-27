@@ -100,6 +100,7 @@ class Program
       "and commas to indicate disjoint verses.\n"+
       "(Examples: \"3:7,8-12\", \"15:10-12,17,20\", \"2:6-12,18,21-23\")"
     );
+    Console.Clear();
     return chpVerses;
   }
 
@@ -125,7 +126,8 @@ class Program
       // SCRIPTURE DISPLAY
       Scripture scripture = new Scripture(userBook, chpVerses);
 
-      while (!scripture.AllHidden())
+      bool done = false;
+      while (!done)
       {
         Console.WriteLine("| (ENTER) Hide more words | 0: Quit to Main Menu | 1: Restore one blank word |\n");
         Console.WriteLine(scripture);
@@ -142,6 +144,10 @@ class Program
         }
         else
         {
+          if (scripture.AllHidden())
+          {
+            break;
+          }
           scripture.Obscure();
         }
         Console.Clear();

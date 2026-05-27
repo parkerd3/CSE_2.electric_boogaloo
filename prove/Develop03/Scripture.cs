@@ -18,7 +18,7 @@ public class Scripture
 
   public override string ToString()
   {
-    string display = reference + "\n";
+    string display = reference + "\n\n";
 
     foreach (Passage passage in passages)
     {
@@ -31,7 +31,10 @@ public class Scripture
   public void Obscure()
   {
     // Will obscure at least 3 words per call, but more for a lot of verses.
-    int hideCount = int.Min(3, passages.Count()/2);
+    int x = 3;
+    int y = passages.Count()/2;
+
+    int hideCount = int.Min(x, y);
     Random random = new();
 
     int i = 0;
