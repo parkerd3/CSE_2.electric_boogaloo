@@ -76,71 +76,6 @@ classDiagram
         
         class Scripture {
             - Reference _reference
-            - Word _text
-            + Scripture(String book, String chVerses)
-            + Obscure() String
-            + Restore() String
-            + ToString() String
-        }
-        class Reference {
-            - String _book
-            - int _chapter
-            - List~int~ _verses
-            + Reference(String book, String chVerses)
-            - ParseVerses(String) List~int~
-            + Verses() List~int~ _verses
-            + ToString()
-        }
-        class Word {
-            - String LDSCanonFileName = "lds-scriptures.csv"
-            - String BibleFileName = "kjv-scriptures.csv"
-            - String _scriptureText
-            - String _obscuredText
-            + Word(Reference)
-            + Obscure() void
-            + Restore() void
-            + ToString() String 
-        }
-    }
-    Program ..> Menu : Calls to get<br>menu strings<br>for display.
-    Scripture *-- Word
-    Scripture *-- Reference
-    Scripture ..> Menu : Gets Book
-    Scripture ..> Program : Gets Verse(s)
-    Reference ..> Scripture : Gets Book<br>and verse(s)
-    Program ..> Scripture : Calls to get<br>obscured string<br>for display.
-```
-
-#### Class Diagram with Passage Class
-
-```mermaid
-classDiagram
-    direction LR
-    namespace User_Interface {
-        class Program {
-            GetUserInput() int
-            GetUserInput() String
-        }
-        class Menu {
-            - String _volumes
-            - String _subOT
-            - String _subNT
-            - String _subBoM
-            - String _booksPGP
-            - [And a bunch others]
-            + Main() String _volumes
-            + Volume(int volChoice) String
-            + Subsection(int volChoice, int subChoice) String
-            + Books(int volChoice, int subChoice, int bookChoice) String book
-        }
-    }
-    
-    note for Reference "Reference class handles<br>turning the user input<br>into a useful list of<br>integers."
-    note for Word "Takes in a Reference object<br>at construction, then<br>accesses the csv files for the<br>appropriate scripture texts."
-    namespace Scripture_Handling{
-        
-        class Scripture {
-            - Reference _reference
             - List~Passage~ _passages
             + Scripture(String book, String chVerses)
             + Obscure() String
@@ -149,11 +84,17 @@ classDiagram
         }
         class Passage {
             - String LDSCanonFileName = "lds-scriptures.csv"
-            - String _scriptureText
-            - String _obscuredText
-            + Word(Reference)
+            - String _verseNumber
+            - List~Word~ _scriptureText
+            - List~Word~ _obscuredText
+            - List~int~ _visibleWordIndices
+            - List~int~ _hiddenWordIndices
+            + Passage(string book, int chapter, int verse)
+            - FindRow(targetBook, targetChapter, targetVerse)
             + Obscure() void
             + Restore() void
+            + IsAllVisible() bool
+            + IsAllHidden() bool
             + ToString() String 
         }
         class Reference {
@@ -167,10 +108,9 @@ classDiagram
         }
         class Word {
             - String _text
-            - Bool _isObscured
+            + Word(String text)
             + Obscure() void
-            + Restore() void
-            + IsObscured() bool
+            + ToString() string
         }
     }
     Program ..> Menu : Calls to get<br>menu strings<br>for display.
