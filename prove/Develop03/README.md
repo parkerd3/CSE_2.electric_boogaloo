@@ -63,7 +63,7 @@ Here are the pages associated with this assignment:
 
 ### Class Diagram
 
-My class diagram for this program
+My class diagram for this program that I used to help me write it.
 
 ```mermaid
 classDiagram
@@ -137,6 +137,167 @@ classDiagram
     Scripture ..> Program : Gets Verse(s)
     Reference ..> Scripture : Gets Book<br>and verse(s)
     Program ..> Scripture : Calls to get<br>obscured string<br>for display.
+```
+
+#### AI Diagrams (For Fun!)
+
+AI's class diagram after having it look at my completed project.
+```mermaid
+classDiagram
+    class Program {
+        <<static>>
+        +Main(args: string[]) void$
+        -GetBookPD() string$
+        -GetVersesPD(userBookPD: string) string$
+    }
+
+    class MenuPD {
+        <<static>>
+        -_volumeIdxPD: int$
+        -_subIdxPD: int$
+        -_bookIdxPD: int$
+        -_mainMenuStringPD: string$
+        -_volumeMenuStringsArrayPD: string[]$
+        -_subMenuStringsArrayPD: string[][]$
+        -_bookTitlesArrayPD: string[][][]$
+        +MainMenuPD() string$
+        +VolumeMenuPD(inputVolumeIdxPD: int) string$
+        +SubsectionMenuPD(inputSubIndexPD: int) string$
+        +BookTitlePD(inputBookIndexPD: int) string$
+    }
+
+    class ScripturePD {
+        -referencePD: ReferencePD
+        -passagesPD: List~PassagePD~
+        +ScripturePD(bookTitlePD: string, chpVersesPD: string)
+        +ObscurePD(hideCountPD: int) void
+        +RestorePD() void
+        +AllHiddenPD() bool
+        +AllVisiblePD() bool
+        +ToString() string
+    }
+
+    class ReferencePD {
+        -_bookPD: string
+        -_chapterPD: int
+        -_versesPD: List~int~
+        -_displayStringPD: string
+        +ReferencePD(bookPD: string, chpVersesPD: string)
+        +VersesPD() List~int~
+        +BookPD() string
+        +ChapterPD() int
+        +ToString() string
+    }
+
+    class PassagePD {
+        -_wordsPD: List~WordPD~
+        -_hiddenIndicesPD: List~int~
+        -_visibleIndicesPD: List~int~
+        -_scriptureCSVFileNamePD: string
+        +PassagePD(targetBookPD: string, targetChapterPD: int, targetVersePD: int)
+        +ObscurePD() void
+        +RestorePD() void
+        +IsAllHiddenPD() bool
+        +IsAllVisiblePD() bool
+        +ToString() string
+    }
+
+    class WordPD {
+        -_textPD: string
+        +WordPD(wordPD: string)
+        +ObscurePD() void
+        +ToString() string
+    }
+
+    %% Relationships
+    Program ..> MenuPD : uses
+    Program ..> ScripturePD : instantiates
+    ScripturePD *-- ReferencePD : contains (1)
+    ScripturePD *-- PassagePD : contains (1..*)
+    PassagePD *-- WordPD : contains (1..*)
+```
+
+Sequence diagram
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant P as Program
+    participant M as MenuPD
+    participant S as ScripturePD
+    participant R as ReferencePD
+    participant Pass as PassagePD
+
+    User->>P: Starts Application
+    loop Main Loop
+        P->>M: GetBookPD() (Navigates Menus)
+        M-->>P: returns userBookPD
+        P->>User: Prompts for Chapter & Verses
+        User-->>P: inputs chpVersesPD
+        
+        P->>S: new ScripturePD(userBookPD, chpVersesPD)
+        activate S
+        S->>R: new ReferencePD(book, chpVerses)
+        R-->>S: reference details
+        loop For each verse in Reference
+            S->>Pass: new PassagePD(book, chapter, verse)
+            Pass-->>S: passage added to list
+        end
+        S-->>P: returns scripturePD instance
+        deactivate S
+
+        loop Obscuring Loop (until quit or fully hidden)
+            P->>User: Displays Scripture & Menu
+            User-->>P: User Input (ENTER, 1, 0)
+            alt Input == ENTER
+                P->>S: ObscurePD(hideCountPD)
+                S->>Pass: ObscurePD() (randomly chosen verse)
+            else Input == "1"
+                P->>S: RestorePD()
+                S->>Pass: RestorePD() (randomly chosen verse)
+            else Input == "0"
+                P->>P: Break Obscuring Loop
+            end
+        end
+    end
+```
+
+Menu Flowchart
+
+```mermaid
+flowchart TD
+    Start([Start: GetBookPD]) --> MM[Main Menu\nMainMenuPD]
+    MM -->|Input '0'| Quit([Quit Program])
+    MM -->|Input 1-5| VolM[Volume Menu\nSets _volumeIdxPD]
+    
+    VolM -->|Input '0'| MM
+    VolM -->|Input Valid ID| SubM[Subsection Menu\nSets _subIdxPD]
+    
+    SubM -->|Input '0'| VolM
+    SubM -->|Input Valid ID| BkM[Book Title Menu\nSets _bookIdxPD]
+    
+    BkM -->|Input '0'| SubM
+    BkM -->|Input Valid ID| Confirm{Confirm Selection?}
+    
+    Confirm -->|Yes| Ret([Return Book Title String])
+    Confirm -->|No / '0'| BkM
+```
+
+Activity Diagram for the Obscure function
+
+```mermaid
+flowchart TD
+    StartNode(["Call: ObscurePD"]) --> CheckEmpty{"Is _visibleIndicesPD<br>empty?"}
+    
+    CheckEmpty -->|Yes| Return(["Return / Do Nothing"])
+    CheckEmpty -->|No| PickRandom["Randomly select an index 'i'<br>from _visibleIndicesPD"]
+    
+    PickRandom --> HideWord["Call _wordsPD[i].ObscurePD()"]
+    
+    HideWord --> RemoveVis["Remove 'i' from _visibleIndicesPD"]
+    RemoveVis --> AddHid["Add 'i' to _hiddenIndicesPD"]
+    
+    AddHid --> Return
 ```
 
 ### IPO Table
