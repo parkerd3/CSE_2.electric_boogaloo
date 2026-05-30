@@ -137,6 +137,12 @@ class Program
     return chpVersesPD;
   }
 
+  static void MyClear()
+  {
+    Console.Clear();
+    Console.WriteLine("\x1b[3J");
+    Console.Clear();
+  }
 
   // MAIN
   static void Main(string[] args)
