@@ -11,7 +11,7 @@ class Program
       "8-19"
     );
 
-    WritingAssingment s2 = new WritingAssingment(
+    WritingAssignment s2 = new WritingAssignment(
       "Mary Waters",
       "European History",
       "The Causes of World War II"

@@ -1,8 +1,8 @@
-public class WritingAssingment : Assignment
+public class WritingAssignment : Assignment
 {
   private string _title;
 
-  public WritingAssingment(
+  public WritingAssignment(
     string name,
     string topic,
     string title
