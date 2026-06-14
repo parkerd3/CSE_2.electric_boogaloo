@@ -45,18 +45,16 @@ public class Activity
     _durationValue = _durationValues_MiliSeconds[choice];
   }
 
-  protected void SetDuration(string duration)
+  protected void End()
   {
-    _duration = duration;
-  }
-
-  protected string End()
-  {
-    string rValue = $"""
-    Well done,
+    Support.Clear();
+    Console.WriteLine(
+    $"""
+    Well done!
 
     You have completed the {_duration} {_activityName}.
-    """;
-    return rValue;
+    """
+    );
+    
   }
 }

@@ -23,6 +23,6 @@ class Program
     {
         Breathing breath = new Breathing();
 
-        breath.TestAnimate();
+        breath.Run();
     }
 }
