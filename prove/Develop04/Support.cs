@@ -44,7 +44,7 @@ public static class Support
     return returnValue;
   }
 
-  static string GetUserStr(string Prompt)
+  public static string GetUserStr(string Prompt)
   {
     string returnValue = "";
     bool flag = true;

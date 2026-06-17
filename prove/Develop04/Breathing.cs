@@ -17,8 +17,8 @@ public class Breathing : Activity
     """,
 
     """
-    1.  2 minutes
-    2.  5 minutes
+    1. 2 minutes
+    2. 4 minutes
     3. 8 minutes
     """,
     ["2 minute", "4 minute", "8 minute"],
@@ -45,6 +45,7 @@ public class Breathing : Activity
     "Complete\n\n" +
     "████████████████████████████████████████████████"
     );
+    base.ToMenu();
   }
 
   

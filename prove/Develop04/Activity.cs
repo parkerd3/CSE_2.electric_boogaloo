@@ -32,7 +32,7 @@ public class Activity
   protected void Begin()
   {
     Console.WriteLine($"""
-    Welcome. You have chosen the {_activityName}.
+    You have chosen the {_activityName}.
 
     {_description}
 
@@ -55,6 +55,11 @@ public class Activity
     You have completed the {_duration} {_activityName}.
     """
     );
-    
+  }
+
+  protected void ToMenu()
+  {
+    Console.WriteLine("Press ENTER to return to the main menu");
+    Console.ReadLine();
   }
 }
