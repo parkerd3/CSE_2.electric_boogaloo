@@ -77,8 +77,7 @@ classDiagram
     Matrix <|-- Vector
 ```
 
-
-
+<!-- 
 ```mermaid
 classDiagram
 
@@ -111,3 +110,4 @@ classDiagram
     VectorMath ..> Matrix : builds / modifies
     MatrixFactory ..> Matrix : creates / fills
 ```
+-->
