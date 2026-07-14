@@ -7,7 +7,7 @@ them. Functionalities will include:
 1. Determinant
 1. Transpose
 1. Inverse
-1. LU Decomposition
+1. LU, QR, and PDP Decomposition
 1. Matrix addition and multiplication
 1. Matrix-Vector multiplication
 1. The RREF of a matrix
@@ -17,38 +17,70 @@ them. Functionalities will include:
 
 ```mermaid
 classDiagram
-class Matrix{
-    - double[,] _data
-    Matrix(int rows, int columns)
-    Matrix(double[,] data)
-    + GetRowCount()
-    + GetColumnCount()
-    + IsSquare()
-    + IsUpperTriangular()
-    + IsLowerTriangular()
-    + GetTranspose()
-    + static Overloads() +, -, mtx * mtx, sclr * mtx,
-
+    direction LR
+    class Matrix{
+        - double[,] _data
+        - int + _rowCount
+        - int + _colCount
+        - bool + _isSquare
+        Matrix(double[,])
+        + GetRowCount()
+        + GetColumnCount()
+        + IsSquare()
+        + IsUpperTriangular()
+        + IsLowerTriangular()
+        + GetTranspose()
+        + RREF()
+        + static Overloads()$ +, -, mtx * mtx, double * mtx, mtx ** int
     }
+
+    class Vector{
+        Vector(double[])
+        + DotProduct(Vector)
+        + Scale(double)
+        + Unitize()
+    }
+
+    class SquareMatrix{
+        - double _determinant
+        + GetInverse()
+        + CalculateDeterminant()
+    }
+
+    class IdentityMtx{
+        IdentityMtx(int size)
+    }
+
+    class ZeroMtx{
+        ZeroMtx(int rows, int columns)
+    }
+
+    class RowOperation {
+        <<static>>
+        +SwapRows(Matrix, int row1, int row2)
+        +ScaleRow(Matrix a, int row, double scalar)
+        +AddRowSum(Matrix a, int row1, double scalar, int row2)
+    }
+
+    class Factor {
+        <<static>>
+        + LU(mtx)
+        + QR(mtx)
+        + PDP(mtx)
+    }
+
+    Matrix <|-- SquareMatrix
+    Matrix <|-- ZeroMtx
+    Matrix <.. RowOperation : modifies
+    SquareMatrix <|-- IdentityMtx
+    Matrix <.. Factor : depends on and creates
+    Matrix <|-- Vector
 ```
+
+
 
 ```mermaid
 classDiagram
-direction LR
-    class Matrix {
-        -double[,] _data
-        +int RowCount
-        +int ColumnCount
-        +bool IsSquare
-        +Matrix(int rows, int cols)
-        +Matrix(double[,] data)
-        +double GetEntry(int row, int col)
-        +double[] GetColumn(int colIndex)
-        +void Insert(Matrix b, int startRow, int startCol)
-        +Multiply(Matrix a, Matrix b, Matrix target)$
-        +Add(Matrix a, Matrix b, Matrix target)$
-        +Subtract(Matrix a, Matrix b, Matrix target)$
-    }
 
     class MatrixDecomposition {
         <<static>>
@@ -56,16 +88,6 @@ direction LR
         +IsLUFactorable(Matrix a)$
         +GetEchelonForm(Matrix a, Matrix target)$
         +CalculateDeterminant(Matrix a)$
-    }
-
-    class ElementaryRowOperations {
-        <<static>>
-        +SwapRows(Matrix a, int row1, int row2)$
-        +BuildESwap(int size, int row1, int row2, Matrix target)$
-        +ScaleRow(Matrix a, int row, double scalar)$
-        +BuildEScale(int size, int row, double scalar, Matrix target)$
-        +AddRowSum(Matrix a, int sourceRow, int targetRow, double scalar)$
-        +BuildESum(int size, int sourceRow, int targetRow, double scalar, Matrix target)$
     }
 
     class VectorMath {
@@ -86,7 +108,6 @@ direction LR
     }
 
     MatrixDecomposition ..> Matrix : depends on
-    ElementaryRowOperations ..> Matrix : modifies
     VectorMath ..> Matrix : builds / modifies
     MatrixFactory ..> Matrix : creates / fills
 ```

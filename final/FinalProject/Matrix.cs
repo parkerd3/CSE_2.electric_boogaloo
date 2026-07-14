@@ -1,4 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+// If it is square, then the Matrix class will automatically create itself as an instance
+// of a square matrix specifically.
 
 public class Matrix
 {
@@ -62,6 +66,21 @@ public class Matrix
     return column;
   }
 
+  /// <summary>
+  /// Return the row at the specified index.
+  /// </summary>
+  /// <param name="row"></param>
+  /// <returns></returns>
+  public double[] GetRow(int row)
+  {
+    double[] returnRow = new double[_colCount];
+    for (int i = 0; i < _colCount; i++)
+    {
+      returnRow[i] = _data[row,i];
+    }
+    return returnRow;
+  }
+
   // Other methods
   public Matrix Transpose()
   {
@@ -77,19 +96,23 @@ public class Matrix
     return new Matrix(T);
   }
 
-  /// <summary>
-  /// Return the row at the specified index.
-  /// </summary>
-  /// <param name="row"></param>
-  /// <returns></returns>
-  public double[] GetRow(int row)
+  public override string ToString()
   {
-    double[] returnRow = new double[_colCount];
-    for (int i = 0; i < _colCount; i++)
+    string display;
+
+    // $"{value:F2}"
+    // ┐┌└┘│
+    for (int i = 0; i < _rowCount; i++)
     {
-      returnRow[i] = _data[row, i];
+      string currentRow = "│";
+      for (int j = 0; j < _colCount; j++)
+      {
+        currentRow += $"{_data[i,j]:F2}";
+      }
     }
-    return returnRow;
+    display = "bruh";
+
+    return display;
   }
 
   // ===========================================================================

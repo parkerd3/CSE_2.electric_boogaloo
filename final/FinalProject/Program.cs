@@ -9,12 +9,7 @@ class Program
     Console.WriteLine("hello matrix world");
 
 
-    Matrix test = new Matrix({ { 1, 2 }, { 3, 4 }, { 5, 6 } });
-
-
-    Matrix a
-    matrix B
-
-    Matrix Prod = a * B
+    Matrix test = new ZeroMatrix(3, 4);
+    Console.WriteLine(test);
   }
 }
