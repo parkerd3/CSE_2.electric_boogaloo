@@ -8,18 +8,34 @@ public class Matrix
 {
   
   protected double [,] _data;
-  private int _rowCount;
-  private int _colCount;
-  private bool IsSquare;
+  protected int _rowCount;
+  protected int _colCount;
+  protected bool _isSquare = false;
+  protected bool? _isUpperTriangular = null;
+  protected bool? _isLowerTriangular = null;
   
 
   // Constructors
+  public static Matrix Create(double[,] data)
+  {
+    if (data.GetLength(1) == data.GetLength(2))
+    {
+      return new SquareMatrix(data);
+    }
+    else
+    {
+      return new Matrix(data);
+    }
+  }
+
+
+
 
   /// <summary>
   /// Create a matrix with an existing 2d array
   /// </summary>
   /// <param name="data"></param>
-  public Matrix(double[,] data)
+  protected Matrix(double[,] data)
   {
     _data = data;
     _rowCount = _data.GetLength(0);
@@ -38,7 +54,9 @@ public class Matrix
   //   _colCount = _data.GetLength(1);
   // }
   
+  // ===========================================================================
   // Getters
+  // ===========================================================================
 
   /// <summary>
   /// Return the value at the specified row and column index.
@@ -81,8 +99,21 @@ public class Matrix
     return returnRow;
   }
 
-  // Other methods
-  public Matrix Transpose()
+  public int GetRowCount()
+  {
+    return _rowCount;
+  }
+
+  public int GetColumnCount()
+  {
+    return _colCount;
+  }
+
+  /// <summary>
+  /// Return the transpose of this matrix.
+  /// </summary>
+  /// <returns></returns>
+  public Matrix GetTranspose()
   {
     double[,] T = new double[_colCount,_rowCount];
     for (int i = 0; i < _rowCount; i++)
@@ -92,10 +123,84 @@ public class Matrix
         T[j,i] = _data[i,j];
       }
     }
-
-    return new Matrix(T);
+    
+    if (_isSquare)
+    {
+      return new SquareMatrix(T);
+    }
+    else
+    {
+      return new Matrix(T);
+    }
   }
 
+  // ===== Flags =====
+
+  /// <summary>
+  /// Return true if every entry below the main diagonal is zero
+  /// </summary>
+  /// <returns></returns>
+  public bool IsUpperTriangular()
+  {
+    if (_isUpperTriangular.HasValue)
+    {
+      return _isUpperTriangular.Value;
+    }
+    else
+    {
+      _isUpperTriangular = true;
+      for (int i = 1; i < _rowCount; i++)
+      {
+        for (int j = 0; j< i; j++)
+        {
+          if (_data[i,j] != 0)
+          {
+            _isUpperTriangular = false;
+            break;
+          }
+        }
+      }
+      return _isUpperTriangular.Value;
+    }
+  }
+
+  /// <summary>
+  /// Return true if every entry above the main diagonal is zero.
+  /// </summary>
+  /// <returns></returns>
+  public bool IsLowerTriangular()
+  {
+    if (_isLowerTriangular.HasValue)
+    {
+      return _isLowerTriangular.Value;
+    }
+    else
+    {
+      _isLowerTriangular = true;
+      for (int i = 0; i < _rowCount; i++)
+      {
+        for (int j = i+1; j < _colCount; j++)
+        {
+          if (_data[i,j] != 0)
+          {
+            _isLowerTriangular = false;
+            break;
+          }
+        }
+      }
+      return _isLowerTriangular.Value;
+    }
+  }
+
+  public bool IsSquare()
+  {
+    return _isSquare;
+  }
+
+  // ===========================================================================
+  // Other Methods
+  // ===========================================================================
+  
   public override string ToString()
   {
     string display;
@@ -193,5 +298,58 @@ public class Matrix
     }
 
     return new Matrix(mtx);
+  }
+
+  // ===========================================================================
+  // Static RowOperation Class
+  // ===========================================================================
+  
+  public static class RowOperation
+  {
+    /// <summary>
+    /// Return nothing. Swap row at index row1 with the row at index row2.
+    /// </summary>
+    /// <param name="mtx"></param>
+    /// <param name="row1"></param>
+    /// <param name="row2"></param>
+    public static void SwapRows(Matrix mtx, int row1, int row2)
+    {
+      for (int j = 0; j < mtx._colCount; j++)
+      {
+        double temp = mtx._data[row1, j];
+        mtx._data[row1, j] = mtx._data[row2, j];
+        mtx._data[row2, j] = temp;
+      }
+    }
+
+    /// <summary>
+    /// Return nothing. Multiply the row at index row_i by the scalar k.
+    /// </summary>
+    /// <param name="mtx"></param>
+    /// <param name="row_i"></param>
+    /// <param name="k"></param>
+    public static void ScaleRow(Matrix mtx, int row_i, double k)
+    {
+      for (int j = 0; j < mtx._colCount; j++)
+      {
+        mtx._data[row_i, j] = k*mtx._data[row_i, j];
+      }
+    }
+
+    /// <summary>
+    /// Return nothing. Add k times the row at index row1 to row2. 
+    /// (row2 -> k*row1 + row2)
+    /// </summary>
+    /// <param name="mtx"></param>
+    /// <param name="row1"></param>
+    /// <param name="k"></param>
+    /// <param name="row2"></param>
+    public static void AddRow(Matrix mtx, int row1, double k, int row2)
+    {
+      for (int j = 0; j < mtx._colCount; j++)
+      {
+        mtx._data[row2, j] = k*mtx._data[row1, j] + mtx._data[row2, j];
+      }
+    }
   }
 }
