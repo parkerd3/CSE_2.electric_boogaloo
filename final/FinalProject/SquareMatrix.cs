@@ -1,5 +1,7 @@
 using System.Drawing;
 using System.Dynamic;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 
 public class SquareMatrix : Matrix
 {
@@ -32,32 +34,94 @@ public class SquareMatrix : Matrix
   myself.
   */
   {
-    List<double> transformations = new List<double>();
+    if (IsUpperTriangular() || IsLowerTriangular())
+    {
+      double det = 1;
+      for (int n = 0; n < _size; n++)
+      {
+        det = det * _data[n,n];
+      }
+      _determinant = det;
+      return; // Stop executing this function.
+    }
+    // The idea is to row reduce into an upper triangular matrix, and keep track
+    // of each transformation. Then multiply the diagonal entries to get the
+    // determinant, and then correct for the row operations performed on it.
+
+    // We'll use a dummy so as not to mess with the actual data array.    
     SquareMatrix dummy = new SquareMatrix((double[,])this._data.Clone());
-    
+    int swapCount = 0;
+
     // We do this column by column.
+    int pivotRow = 0;
     for (int j = 0; j < _size; j++)
     {
-      int pivotRow = 0;
+      bool freeVariable = false;
       // Search for first nonzero entry (pivot)
-      for (int i = pivotRow; i < _size; i++)
+      if (dummy._data[pivotRow, j] == 0) // Only runs if a swap is necessary
       {
-        if (dummy._data[i,j] != 0 && i == pivotRow)
+        freeVariable = true;
+        // If it makes it through every iteration and fails every check then
+        // every entry is zero => no pivot => column has a free variable.
+        for (int i = pivotRow + 1; i < _size; i++)
         {
-          // If the pivot is already there then move on.
-          break;
-        }
-        else if (dummy._data[i,j] != 0 && i != pivotRow)
-        {
-          // If the pivot wasn't there, move it to the proper index.
-          RowOperation.SwapRows(dummy, i, pivotRow);
-          transformations.Add(-1);
+          if (dummy._data[i, j] != 0)
+          {
+            // If the pivot wasn't there, move it to the proper index, record
+            // the transformation, and carry on.
+            RowOperation.SwapRows(dummy, i, pivotRow);
+            swapCount++;
+            freeVariable = false; // This code only runs if there's a pivot.
+            break;
+          }
         }
       }
 
-      // Now that we have found the pivot, we unitize it 
+
+      if (freeVariable)
+      {
+        _determinant = 0;
+        return; // Abandon ship! No point in doing any more computation.
+      }
+      else // There's a pivot and we can start reducing all the rows below.
+      {
+        // Make every entry below the pivot a zero.
+        for (int i = pivotRow+1; i < _size; i++)
+        {
+          if (dummy._data[i,j] == 0)
+          {
+            continue;
+          }
+          else
+          {
+            double k = -dummy._data[i,j]/dummy._data[pivotRow, j];
+            RowOperation.AddRow(dummy, pivotRow, k, i);
+            // This should effectively scale down the pivot to 1, then multply
+            // it by the additive inverse of the entry below it, so when the
+            // rows are added together, the entry becomes zero like we want.
+          }
+        }
+      }
+
+      pivotRow++;
+    }
+    // Finally! dummy has been reduced into an Upper Triangular matrix, now we
+    // may use this formula to find the determinant:
+    if (swapCount % 2 == 1)
+    {
+      _determinant = -1;
+    }
+    else
+    {
+      _determinant = 1;
+    }
+
+    for (int n = 0; n < _size; n++)
+    {
+      _determinant = _determinant * dummy._data[n,n];
     }
   }
+  
 
   // ===========================================================================
   // Getters
@@ -73,6 +137,26 @@ public class SquareMatrix : Matrix
     {
       CalculateDeterminant();
       return _determinant.Value;
+    }
+  }
+
+  public bool IsInvertible()
+  {
+    if (_isInvertible.HasValue)
+    {
+      return _isInvertible.Value;
+    }
+    else
+    {
+      if (GetDeterminant() == 0)
+      {
+        _isInvertible = false;
+      }
+      else if (GetDeterminant() != 0)
+      {
+        _isInvertible = true;
+      }
+      return _isInvertible.Value;
     }
   }
 

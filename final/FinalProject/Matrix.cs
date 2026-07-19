@@ -13,12 +13,13 @@ public class Matrix
   protected bool _isSquare = false;
   protected bool? _isUpperTriangular = null;
   protected bool? _isLowerTriangular = null;
+  protected bool? _isDiagonal = null;
   
 
   // Constructors
   public static Matrix Create(double[,] data)
   {
-    if (data.GetLength(1) == data.GetLength(2))
+    if (data.GetLength(0) == data.GetLength(1))
     {
       return new SquareMatrix(data);
     }
@@ -192,6 +193,27 @@ public class Matrix
     }
   }
 
+  /// <summary>
+  /// Return true if every entry off the main diagonal is zero.
+  /// </summary>
+  /// <returns></returns>
+  public bool IsDiagonal()
+  {
+    if (_isDiagonal.HasValue)
+    {
+      return _isDiagonal.Value;
+    }
+    else
+    {
+      _isDiagonal = IsUpperTriangular() && IsLowerTriangular();
+      return _isDiagonal.Value;
+    }
+  }
+
+  /// <summary>
+  /// Return true if the number of rows and the number of columns are equal.
+  /// </summary>
+  /// <returns></returns>
   public bool IsSquare()
   {
     return _isSquare;
