@@ -20,8 +20,8 @@ public class SquareMatrix : Matrix
   // ===========================================================================
   internal SquareMatrix(double[,] data) : base(data)
   {
-    base._isSquare = true;
-    _size = base._colCount;
+    _isSquare = true;
+    _size = _colCount;
   }
 
   // Private/Helper functions
@@ -49,7 +49,9 @@ public class SquareMatrix : Matrix
     // determinant, and then correct for the row operations performed on it.
 
     // We'll use a dummy so as not to mess with the actual data array.    
-    SquareMatrix dummy = new SquareMatrix((double[,])this._data.Clone());
+    SquareMatrix dummy = new SquareMatrix((double[,])_data.Clone());
+    // Note to self: you must use a matrix object as the RowOperations only work
+    // on Matrix objects.
     int swapCount = 0;
 
     // We do this column by column.
@@ -160,5 +162,36 @@ public class SquareMatrix : Matrix
     }
   }
 
+  public SquareMatrix Inverse()
+  {
+    if (!IsInvertible())
+    {
+      throw new InvalidOperationException("Matrix is not invertible");
+    }
+    else
+    {
+      double[,] tempData = new double[_size, 2* _size];
+      for (int i = 0; i < _rowCount; i++)
+      {
+        tempData[i, _size+i] = 1;
+        for (int j = 0; j < _colCount; j++)
+        {
+          tempData[i,j] = _data[i,j];
+        }
+      }
+      Matrix tempInverse = new Matrix(tempData);
+      Matrix tempInverted = tempInverse.RREF();
+
+      double[,] tempInvData = new double[_size, _size];
+      for (int i = 0; i < _size; i++)
+      {
+        for (int j = 0; j < _size; j++)
+        {
+          tempInvData[i,j] = tempInverted._data[i, _size+j];
+        }
+      }
+      return new SquareMatrix(tempInvData);
+    }
+  }
 
 }

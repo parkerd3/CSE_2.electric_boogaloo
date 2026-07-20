@@ -1,20 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-// If it is square, then the Matrix class will automatically create itself as an instance
-// of a square matrix specifically.
-
 public class Matrix
 {
   
-  protected double [,] _data;
+  internal double [,] _data;
   protected int _rowCount;
   protected int _colCount;
   protected bool _isSquare = false;
   protected bool? _isUpperTriangular = null;
   protected bool? _isLowerTriangular = null;
   protected bool? _isDiagonal = null;
-  
 
   // Constructors
   public static Matrix Create(double[,] data)
@@ -29,6 +25,11 @@ public class Matrix
     }
   }
 
+  public static Matrix NewIdentity(int n)
+  {
+    return new IdentityMatrix(n);
+  }
+
 
 
 
@@ -36,7 +37,7 @@ public class Matrix
   /// Create a matrix with an existing 2d array
   /// </summary>
   /// <param name="data"></param>
-  protected Matrix(double[,] data)
+  internal Matrix(double[,] data)
   {
     _data = data;
     _rowCount = _data.GetLength(0);
@@ -223,6 +224,76 @@ public class Matrix
   // Other Methods
   // ===========================================================================
   
+  /// <summary>
+  /// Compute and return the row reduced-echelon form of the matrix.
+  /// </summary>
+  /// <returns></returns>
+  public virtual Matrix RREF()
+  /*
+  I actually coded the Determinant function for a square matrix first, but the
+  algorithms are very similar. The main difference here is that I don't have to
+  keep track of the transformations, but I do have to continue even if there is
+  a free variable.
+  */
+  {
+    Matrix R = new Matrix((double[,])_data.Clone());
+    // Note to self: you must use a matrix object as the RowOperations only work
+    // on Matrix objects.
+
+    int pivotRow = 0;
+    for (int j = 0; j < R._colCount && pivotRow < R._rowCount; j++)
+    {
+      // Find entry with the largest absolute value (for efficiency) and also
+      // make sure there's actually a pivot.
+      double phattest = 0;
+      int phatIdx = pivotRow;
+      bool freeVariable = true; // assume there's no pivot until one is found
+      for (int i = pivotRow; i < R._rowCount; i++)
+      {
+        if (Math.Abs(R._data[i,j]) > phattest)
+        {
+          phattest = Math.Abs(R._data[i,j]);
+          phatIdx = i;
+          freeVariable = false;
+        }
+      }
+      if (freeVariable)
+      {
+        // Go to next column without iterating pivot row.
+        continue; 
+      }
+
+      // Put largest entry in pivot position
+      RowOperation.SwapRows(R, phatIdx, pivotRow);
+      // Unitize first entry
+      RowOperation.ScaleRow(R, pivotRow, 1/R._data[pivotRow,j]);
+      // Make every entry above and below the pivot a zero.
+      for (int i = 0; i < R._rowCount; i++)
+      {
+        if (R._data[i,j] == 0 || i == pivotRow)
+        {
+          continue;
+        }
+        else
+        {
+          double k = -R._data[i,j];
+          RowOperation.AddRow(R, pivotRow, k, i);
+        }
+      }
+      
+      pivotRow ++; // Iterate the pivot position and go to next column.
+    }
+
+    if (_isSquare)
+    {
+      return new SquareMatrix(R._data);
+    }
+    else
+    {
+      return R;
+    }
+  }
+
   public override string ToString()
   {
     string display;
