@@ -9,4 +9,9 @@ public class IdentityMatrix : SquareMatrix
     _isInvertible = true;
     _determinant = 1;
   }
+
+  public override Matrix RREF()
+  {
+    return new IdentityMatrix(_size);
+  }
 }

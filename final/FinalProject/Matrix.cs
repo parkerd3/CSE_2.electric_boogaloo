@@ -296,19 +296,50 @@ public class Matrix
 
   public override string ToString()
   {
-    string display;
-
+    string display = "";
+    int totalWidth = 0;
     // $"{value:F2}"
     // ┐┌└┘│
+
+    List<int> widths = new List<int>();
+    for (int j = 0; j < _colCount; j++)
+    {
+      int width = 0;
+      for (int i = 0; i < _rowCount; i++)
+      {
+        if ($"{_data[i,j]:F2}".Length > width)
+        {
+          width = $"{_data[i,j]:F2}".Length;
+        }
+      }
+      widths.Add(width+1);
+    }
+
     for (int i = 0; i < _rowCount; i++)
     {
       string currentRow = "│";
       for (int j = 0; j < _colCount; j++)
       {
+        currentRow += new string(' ', widths[j] - $"{_data[i,j]:F2}".Length);
         currentRow += $"{_data[i,j]:F2}";
+        if (j != _colCount - 1)
+        {
+          currentRow += ",";
+        }
       }
+      currentRow += " │\n";
+      totalWidth = currentRow.Length;
+      display += currentRow;
     }
-    display = "bruh";
+    string top = "┌";
+    top += new string(' ', totalWidth - 3);
+    top += "┐\n";
+    string bottom = "└";
+    bottom += new string(' ', totalWidth - 3);
+    bottom += "┘\n";
+
+    display = top + display;
+    display += bottom;
 
     return display;
   }
